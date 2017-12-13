@@ -15,13 +15,42 @@ def wmax(k, WMAX, D):
         if pw(k, w):
             pass
 
-
+# pw(k) = k % (2**w)
 def pw(k, w):
     return k % (2**w);
 
-
+# get the representation of the set D using pw function
+# D is a set of odd integers,
+# w is an integer >= 2
 def get_Dw(D, w):
     Dw = [];
     for d in D:
         Dw.append(pw(d, w))
     return Dw.sort();
+
+"""
+    Calculcate the set D_w' by using Dw
+
+    Parameters
+    ----------
+    arg1 : List
+        set of odd integers
+    arg2 : int
+        an integer >= 2
+
+    Returns
+    -------
+    List
+        a list that contains Dw and Dw_Neg
+"""
+def get_Dw_Neg(D, w):
+    Dw = get_Dw(D, w);
+    Dw_Neg = [];
+    const = 2**w;
+    for d in Dw:
+        Dw_Neg.append(const - d);
+
+    # get the union of Dw and Dw_Neg
+    result = list(set().union(Dw, Dw_Neg));
+    result.sort(); # sort the array
+    return result
