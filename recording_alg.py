@@ -90,6 +90,13 @@ def get_Dw_Neg(D, w):
     return result
 
 
+def get_WMAX(D):
+    return math.floor(math.log(max(D), 2));
+
+def digitD(k, D):
+
+
+
 def RDP(k, D):
     bin_k = []; # binary representation of k to contain the result
     while k != 0:
