@@ -19,9 +19,21 @@ def wmax(k, WMAX, D):
 def pw(k, w):
     return k % (2**w);
 
-# get the representation of the set D using pw function
-# D is a set of odd integers,
-# w is an integer >= 2
+"""
+    Calculcate the set D_w
+
+    Parameters
+    ----------
+    arg1 : List
+        set of odd integers
+    arg2 : int
+        an integer >= 2
+
+    Returns
+    -------
+    List
+        a list that contains Dw which is pw(d) for each d in D
+"""
 def get_Dw(D, w):
     Dw = [];
     for d in D:
