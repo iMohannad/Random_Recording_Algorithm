@@ -15,9 +15,9 @@
     int
         an integer that satisifies the two coniditons for wmax(k)
 """
-def wmax(k, WMAX, D):
-    w = WMAX;
-    for i in range(WMAX + 2, -1, 1):
+def wmax(k, Wn, D):
+    w = Wn + 2;
+    for i in range(Wn + 2, -1, 1):
         d_flag = True;
         Dw_neg = get_Dw_Neg(D, i);
         # check the first candidate where di \in D < k
@@ -90,11 +90,33 @@ def get_Dw_Neg(D, w):
     return result
 
 
-def get_WMAX(D):
+def get_Wn(D):
     return math.floor(math.log(max(D), 2));
 
 def digitD(k, D):
+    if k % 2 == 0:
+        return 0;
+    Wn = get_Wn(D);
+    Wmax = get_Wn(k, Wn, D);
+    Dwmax = get_Dw(D, Wmax);
+    result = null;
+    if pw(k, Wmax) in Dwmax:
+        for d in D:
+            if d >= k:
+                continue;
+            if pw(k, Wmax) == pw(d, Wmax):
+                result = d;
+                break;
+        return result;
 
+    if (2**Wmax - pw(k, Wmax)) in Dwmax:
+        for d in D:
+            if d >= k:
+                continue;
+            if (2**Wmax - pw(k, Wmax)) == p(d, Wmax):
+                result = -d;
+
+        return result;
 
 
 def RDP(k, D):
