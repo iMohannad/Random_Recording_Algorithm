@@ -17,9 +17,9 @@
 """
 def wmax(k, WMAX, D):
     w = WMAX;
-
     for i in range(WMAX + 2, -1, 1):
         d_flag = True;
+        Dw_neg = get_Dw_Neg(D, i);
         # check the first candidate where di \in D < k
         for d in D:
             if d >= k:
@@ -29,8 +29,13 @@ def wmax(k, WMAX, D):
         if d_flag == False:
             continue;
 
-        if pw(k, w):
-            pass
+        if (pw(k, i) in Dw_neg):
+            w = i;
+            break;
+
+    return w;
+
+
 
 # pw(k) = k % (2**w)
 def pw(k, w):
