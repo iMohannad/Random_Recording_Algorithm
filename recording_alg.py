@@ -88,3 +88,13 @@ def get_Dw_Neg(D, w):
     result = list(set().union(Dw, Dw_Neg));
     result.sort(); # sort the array
     return result
+
+
+def RDP(k, D):
+    bin_k = []; # binary representation of k to contain the result
+    while k != 0:
+        ki = digitD(k, D);
+        bin_k.insert(0, ki);
+        k = (k - ki) / 2;
+
+    return bin_k;
