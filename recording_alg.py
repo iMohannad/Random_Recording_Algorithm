@@ -1,3 +1,20 @@
+"""
+    wmax(k) is the largest integer w <= WMAX such that two conditions are satisified:
+    1. di < k,
+    2. pw(k) in Dw'
+
+    Parameters
+    ----------
+    k : int
+        an integer k to be represented in random representation
+    WMAX : int
+        WMAX is the integer calculate from get_WMAX(D)
+
+    Returns
+    -------
+    int
+        an integer that satisifies the two coniditons for wmax(k)
+"""
 def wmax(k, WMAX, D):
     w = WMAX;
 
