@@ -1,4 +1,6 @@
 import math
+import random
+import sys
 
 """
     wmax(k) is the largest integer w <= WMAX such that two conditions are satisified:
@@ -34,7 +36,6 @@ def wmax(k, Wn, D):
         if (pw(k, i) in Dw_neg):
             w = i;
             break;
-
     return w;
 
 
@@ -125,7 +126,8 @@ def digitD(k, D):
             if (2**Wmax - pw(k, Wmax)) == pw(d, Wmax):
                 result = -d;
         return result;
-
+    print Wmax
+    print Dwmax
     print "no condition"
 
 
@@ -138,8 +140,28 @@ def RDP(k, D):
 
     return bin_k;
 
+
+def generate_random_D(m, l):
+    if l > (m+1)/2:
+        raise ValueError("l should satisfy the condition l <= (m+1)/2");
+    D = [];
+    for i in range(2, l+1, 1):
+        odd = False;
+        while not odd:
+            x = random.randint(3, m);
+            if(x % 2 != 0 and x not in D):
+                odd = True;
+        D.append(x);
+    D.sort();
+    return D;
+
 if __name__ == '__main__':
-    k = 31415;
-    D = [1, 3, 23, 27];
+    k = int(sys.argv[1]);
+    m = int(sys.argv[2]);
+    l = int(sys.argv[3]);
+    D = generate_random_D(m, l);
+    D.insert(0, 1);
+    print "D = ", D, ", n = ", len(D);
     result = RDP(k, D);
     print result;
+    print "Length => ", len(result)
