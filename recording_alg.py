@@ -155,6 +155,15 @@ def generate_random_D(m, l):
     D.sort();
     return D;
 
+""" To run the program, you need to input 3 values, 
+    k: The number to be converted
+    m: it's an upper bound for the set of numbers where the set D will be generated from 
+       so, if m = 10 it means, D will be generated from the set [1, 2 .... 10]
+    l: The number of elements in the set D.
+    
+    Running the program from a terminal as follows:
+    python recording_alg.py k m l   (Where k, m, and l are numbers)
+"""
 if __name__ == '__main__':
     k = int(sys.argv[1]);
     m = int(sys.argv[2]);
