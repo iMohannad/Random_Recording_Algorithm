@@ -22,20 +22,26 @@ import sys
 def wmax(k, Wn, D):
     w = Wn + 2;
     for i in range(Wn + 2, 1, -1):
-        d_flag = True;
+        d_flag = False;
         Dw_neg = get_Dw_Neg(D, i);
         Dw = get_Dw(D, i)
+        print "------------ WMAX = ", i, " ----------------"
+        print "D_", i, " = ", Dw
+        print "D_Neg_", i, " = ", Dw_neg
+        
         # check the first candidate where di \in D < k
-        for d in Dw_neg:
-            if d > k:
-                d_flag = False;
+        for d in D:
+            if d < k:
+                d_flag = True;
                 break;
         # If condition 1 is not satisified, choose another w
         if d_flag == False:
             continue;
+        print "pw(", k, ", ", i, ") = ", pw(k, i);
         if (pw(k, i) in Dw_neg):
             w = i;
             break;
+        print "--------------------------------------------"
     return w;
 
 
@@ -105,29 +111,41 @@ def digitD(k, D):
     if k == 1:
         return k;
     Wn = get_Wn(D);
-    Wmax = wmax(k, Wn, D);
-    Dwmax = get_Dw(D, Wmax);
-    result = -100;
-    flag_cond1 = False;
-    if pw(k, Wmax) in Dwmax:
-        for d in D:
-            if d >= k:
-                continue;
-            if pw(k, Wmax) == pw(d, Wmax):
-                result = d;
-                # this flag is to check if it's need to go and check the other condition.
-                flag_cond1 = True;
-                break;
-        if flag_cond1:
-            return result;
+    Wmax1 = wmax(k, Wn, D);
+    Wmax = Wmax1;
+    while (Wmax > 1):
+        print "~~~~~~~~~~~~~ Wmax = ", Wmax , " ~~~~~~~~~~~~~~~"
+        Dwmax = get_Dw(D, Wmax);
+        Dw_neg = get_Dw_Neg(D, Wmax);
+        print "Dw_neg = ", Dw_neg;
+        result = -100;
+        flag_cond1 = False;
+        if pw(k, Wmax) in Dwmax:
+            for d in D:
+                if d >= k:
+                    continue;
+                print "pw(k, Wmax) > ", pw(k, Wmax), "pw(d, Wmax) > ", pw(d, Wmax)
+                if pw(k, Wmax) == pw(d, Wmax):
+                    result = d;
+                    # this flag is to check if it's need to go and check the other condition.
+                    flag_cond1 = True;
+                    break;
+            if flag_cond1:
+                print result;
+                return result;
 
-    if (2**Wmax - pw(k, Wmax)) in Dwmax:
-        for d in D:
-            if d >= k:
-                continue;
-            if (2**Wmax - pw(k, Wmax)) == pw(d, Wmax):
-                result = -d;
-        return result;
+        print "2**Wmax - pw(", k, ", Wmax) > ", (2**Wmax - pw(k, Wmax))
+        if (2**Wmax - pw(k, Wmax)) in Dwmax:
+            for d in D:
+                if d >= k:
+                    continue;
+                print "pw(k, Wmax) > ", pw(k, Wmax), "2**Wmax - pw(d, Wmax) > ", (2**Wmax - pw(d, Wmax))
+                if (2**Wmax - pw(k, Wmax)) == pw(d, Wmax):
+                    print d;
+                    result = -d;
+                    break;
+            return result;
+        Wmax -= 1;
     print Wmax
     print Dwmax
     print "2**Wmax ", 2**Wmax
@@ -170,10 +188,13 @@ def generate_random_D(m, l):
     python recording_alg.py k m l   (Where k, m, and l are numbers)
 """
 if __name__ == '__main__':
-    k = int(sys.argv[1]);
-    m = int(sys.argv[2]);
-    l = int(sys.argv[3]);
-    D = generate_random_D(m, l);
+    # k = int(sys.argv[1]);
+    # m = int(sys.argv[2]);
+    # l = int(sys.argv[3]);
+    # D = generate_random_D(m, l);
+    k = 39;
+    D = [3, 23, 27, 53, 61, 71, 79, 97];
+    # D = [3, 23, 27]
     D.insert(0, 1);
     print "D = ", D, ", n = ", len(D);
     result = RDP(k, D);
