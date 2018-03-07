@@ -28,7 +28,7 @@ def wmax(k, Wn, D):
         print "------------ WMAX = ", i, " ----------------"
         print "D_", i, " = ", Dw
         print "D_Neg_", i, " = ", Dw_neg
-        
+
         # check the first candidate where di \in D < k
         for d in D:
             if d < k:
