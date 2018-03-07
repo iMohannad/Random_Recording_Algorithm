@@ -29,14 +29,14 @@ def wmax(k, Wn, D):
         print "D_pos_", i, " = ", D_pos
         print "D_neg_", i, " = ", D_neg
 
-        # # check the first candidate where di \in D < k
-        # for d in D:
-        #     if d < k:
-        #         d_flag = True;
-        #         break;
+        # check the first candidate where di \in D < k
+        for d in D:
+            if d < k:
+                d_flag = True;
+                break;
         # If condition 1 is not satisified, choose another w
-        # if d_flag == False:
-        #     continue;
+        if d_flag == False:
+            continue;
 
         Dw = get_Dw(D, i);
         print "Dw_", i, " = ", Dw;
