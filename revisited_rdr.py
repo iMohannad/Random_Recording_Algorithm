@@ -96,7 +96,7 @@ def get_D_neg(D, w):
     D_pos = get_D_pos(D, w);
     Dw_Neg = [];
     const = 2**w;
-    for d in Dw:
+    for d in D_pos:
         Dw_Neg.append(const - d);
 
     Dw_Neg.sort();
@@ -125,46 +125,46 @@ def digitD(k, D):
     print "D_neg = ", D_neg;
     result = -100;
     flag_cond1 = False;
-    if pw(k, Wmax) in Dwmax:
+    if pw(k, h) in D_pos:
         for d in D:
-            if d >= k:
-                continue;
-            print "pw(k, Wmax) > ", pw(k, Wmax), "pw(d, Wmax) > ", pw(d, Wmax)
-            if pw(k, Wmax) == pw(d, Wmax):
+            # if d >= k:
+            #     continue;
+            print "pw(k, h) > ", pw(k, h), "pw(d, h) > ", pw(d, h)
+            if pw(k, h) == pw(d, h):
+                print "Result > ", d;
                 result = d;
-                # this flag is to check if it's need to go and check the other condition.
-                flag_cond1 = True;
                 break;
-        if flag_cond1:
-            print result;
-            return result;
-
-    print "2**Wmax - pw(", k, ", Wmax) > ", (2**Wmax - pw(k, Wmax))
-    if (2**Wmax - pw(k, Wmax)) in Dwmax:
+    else:
+        print "2**h - pw(", k, ", h) > ", (2**h - pw(k, h))
         for d in D:
-            if d >= k:
-                continue;
-            print "pw(k, Wmax) > ", pw(k, Wmax), "2**Wmax - pw(d, Wmax) > ", (2**Wmax - pw(d, Wmax))
-            if (2**Wmax - pw(k, Wmax)) == pw(d, Wmax):
-                print d;
+            # if d >= k:
+            #     continue;
+            print "pw(k, h) > ", pw(k, h), "2**h - pw(d, h) > ", (2**h - pw(d, h))
+            if pw(k, h) == (2**h - pw(d, h)):
+                print "Result > ", d;
                 result = -d;
                 break;
-        return result;
-        
-    print Wmax
-    print Dwmax
-    print "2**Wmax ", 2**Wmax
-    print "pw(k, Wmax) ", pw(k, Wmax)
-    print "2**Wmax - pw(k, Wmax = ", 2**Wmax - pw(k, Wmax)
-    print "no condition"
+
+    return result;
+    # print Wmax
+    # print Dwmax
+    # print "2**Wmax ", 2**Wmax
+    # print "pw(k, Wmax) ", pw(k, Wmax)
+    # print "2**Wmax - pw(k, Wmax = ", 2**Wmax - pw(k, Wmax)
+    # print "no condition"
 
 
 def RDP(k, D):
+    count = 10;
     bin_k = []; # binary representation of k to contain the result
     while k != 0:
+        count -= 1
+        if (count == 0):
+            break;
         ki = digitD(k, D);
         bin_k.insert(0, ki);
         k = (k - ki) / 2;
+        print "k > ", k
 
     return bin_k;
 
