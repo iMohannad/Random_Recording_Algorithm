@@ -51,6 +51,8 @@ def wmax(k, Wn, D):
 
 # pw(k) = k % (2**w)
 def pw(k, w):
+    if (k < 0):
+        return k + (2**w);
     return k % (2**w);
 
 """
