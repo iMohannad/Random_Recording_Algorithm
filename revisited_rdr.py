@@ -3,6 +3,18 @@ import random
 import sys
 
 
+""" Convert integer k to NAF format using the following algorithm
+    i ← 0
+    while k > 0 do
+       if k is odd then
+           zi ← 2 − (k mod 4)
+           k ← k −  zi
+       else
+           zi ← 0
+       k ← k/2
+       i ← i + 1
+   return z 
+"""
 def convertNAF(k):
     naf = [];
     while k > 0:
@@ -14,6 +26,7 @@ def convertNAF(k):
             k = k - zi;
         k = k/2;
     return naf;
+
 
 
 """
