@@ -2,6 +2,20 @@ import math
 import random
 import sys
 
+
+def convertNAF(k):
+    naf = [];
+    while k > 0:
+        if (k%2 == 0):
+            naf.insert(0, 0);
+        else:
+            zi = 2 - (k % 4);
+            naf.insert(0, zi);
+            k = k - zi;
+        k = k/2;
+    return naf;
+
+
 """
     wmax(k) is the largest integer w <= WMAX such that two conditions are satisified:
     1. di < k,
@@ -31,7 +45,7 @@ def wmax(k, Wn, D):
 
         # check the first candidate where di \in D < k
         for d in D:
-            if d < abs(k):
+            if d < k:
                 if (pw(k, i) == pw(d, i)):
                     return i;
                 if (pw(k, i) == 2**i - pw(d, i)):
@@ -136,6 +150,7 @@ def digitD(k, D):
         return k;
     Wn = get_Wn(D);
     h = wmax(k, Wn, D);
+    print "h > ", h, " k = ", k
     D_pos = get_D_pos_k(D, h, k);
     D_neg = get_D_neg_k(D, h, k);
     # print "---------------------";
