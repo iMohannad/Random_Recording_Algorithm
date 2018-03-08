@@ -4,16 +4,16 @@ import sys
 
 
 """ Convert integer k to NAF format using the following algorithm
-    i ← 0
+    i <- 0
     while k > 0 do
        if k is odd then
-           zi ← 2 − (k mod 4)
-           k ← k −  zi
+           zi <- 2 - (k mod 4)
+           k <- k - zi
        else
-           zi ← 0
-       k ← k/2
-       i ← i + 1
-   return z 
+           zi <- 0
+       k <- k/2
+       i <- i + 1
+   return z
 """
 def convertNAF(k):
     naf = [];
@@ -27,7 +27,17 @@ def convertNAF(k):
         k = k/2;
     return naf;
 
-
+""" An array of a number is passed to the function,
+    The function determines if the number is a NAF number or not
+    Which means that there is no two consecutive  1s in the array """
+def isNAF(naf):
+    length = len(naf);
+    i = 0;
+    while i < length - 1:
+        if (naf[i] == 1 and naf[i] == naf[i+1]):
+            return False;
+        i += 1;
+    return True;
 
 """
     wmax(k) is the largest integer w <= WMAX such that two conditions are satisified:
@@ -248,13 +258,16 @@ if __name__ == '__main__':
     D = [3, 23, 27, 53, 61, 71, 79, 97];
     D.insert(0, 1);
     k = 1;
-    while k < 100:
-        # D = [3, 23, 27]
-        # print "D = ", D, ", n = ", len(D);
-        result = RDP(k, D);
-        if (k < 10):
-            print "k = ", k, "\t\tRDR = ", result#, "\t\tLength -> ", len(result);
-        else:
-            print "k = ", k, "\tRDR = ", result#, "\t\tLength -> ", len(result);
-        # print "Length => ", len(result)
-        k += 1
+    naf = convertNAF(37);
+    flag = isNAF(naf);
+    print "NAF of 10 is ", naf, " and flag = ", flag
+    # while k < 100:
+    #     # D = [3, 23, 27]
+    #     # print "D = ", D, ", n = ", len(D);
+    #     result = RDP(k, D);
+    #     if (k < 10):
+    #         print "k = ", k, "\t\tRDR = ", result#, "\t\tLength -> ", len(result);
+    #     else:
+    #         print "k = ", k, "\tRDR = ", result#, "\t\tLength -> ", len(result);
+    #     # print "Length => ", len(result)
+    #     k += 1
