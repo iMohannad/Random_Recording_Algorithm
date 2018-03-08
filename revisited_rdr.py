@@ -25,26 +25,19 @@ def wmax(k, Wn, D):
         d_flag = False;
         D_neg = get_D_neg(D, i);
         D_pos = get_D_pos(D, i);
-        print "------------ WMAX = ", i, " ----------------"
-        print "D_pos_", i, " = ", D_pos
-        print "D_neg_", i, " = ", D_neg
+        # print "------------ WMAX = ", i, " ----------------"
+        # print "D_pos_", i, " = ", D_pos
+        # print "D_neg_", i, " = ", D_neg
 
         # check the first candidate where di \in D < k
         for d in D:
-            if d < k:
-                d_flag = True;
-                break;
-        # If condition 1 is not satisified, choose another w
-        if d_flag == False:
-            continue;
+            if d < abs(k):
+                if (pw(k, i) == pw(d, i)):
+                    return i;
+                if (pw(k, i) == 2**i - pw(d, i)):
+                    return i;
 
-        Dw = get_Dw(D, i);
-        print "Dw_", i, " = ", Dw;
-        print "pw(", k, ", ", i, ") = ", pw(k, i);
-        if (pw(k, i) in Dw):
-            w = i;
-            break;
-        print "--------------------------------------------"
+        # print "--------------------------------------------"
     return w;
 
 
@@ -75,10 +68,21 @@ def get_D_pos(D, w):
     for d in D:
         entry = pw(d, w)
         if (entry not in D_pos):
-            D_pos.append(pw(d, w))
+            D_pos.append(entry)
     D_pos.sort();
     return D_pos;
 
+
+def get_D_pos_k(D, w, k):
+    D_pos = [];
+    for d in D:
+        if (d > k):
+            break;
+        entry = pw(d, w)
+        if (entry not in D_pos):
+            D_pos.append(entry)
+    D_pos.sort();
+    return D_pos;
 """
     Calculcate the set D_w' by using Dw
 
@@ -96,6 +100,16 @@ def get_D_pos(D, w):
 """
 def get_D_neg(D, w):
     D_pos = get_D_pos(D, w);
+    Dw_Neg = [];
+    const = 2**w;
+    for d in D_pos:
+        Dw_Neg.append(const - d);
+
+    Dw_Neg.sort();
+    return Dw_Neg;
+
+def get_D_neg_k(D, w, k):
+    D_pos = get_D_pos_k(D, w, k);
     Dw_Neg = [];
     const = 2**w;
     for d in D_pos:
@@ -122,31 +136,35 @@ def digitD(k, D):
         return k;
     Wn = get_Wn(D);
     h = wmax(k, Wn, D);
-    D_pos = get_D_pos(D, h);
-    D_neg = get_D_neg(D, h);
-    print "D_neg = ", D_neg;
+    D_pos = get_D_pos_k(D, h, k);
+    D_neg = get_D_neg_k(D, h, k);
+    # print "---------------------";
+    # print "k = ", k, " h = ", h
+    # print "D_pos = ", D_pos
+    # print "D_neg = ", D_neg;
     result = -100;
     flag_cond1 = False;
     if pw(k, h) in D_pos:
         for d in D:
             # if d >= k:
             #     continue;
-            print "pw(k, h) > ", pw(k, h), "pw(d, h) > ", pw(d, h)
+            # print "pw(k, h) > ", pw(k, h), "pw(", d, ", h) > ", pw(d, h)
             if pw(k, h) == pw(d, h):
-                print "Result > ", d;
+                # print "Result > ", d;
                 result = d;
                 break;
     else:
-        print "2**h - pw(", k, ", h) > ", (2**h - pw(k, h))
+        # print "2**h - pw(", k, ", h) > ", (2**h - pw(k, h))
         for d in D:
             # if d >= k:
             #     continue;
-            print "pw(k, h) > ", pw(k, h), "2**h - pw(d, h) > ", (2**h - pw(d, h))
+            # print "pw(k, h) > ", pw(k, h), "2**h - pw(d, h) > ", (2**h - pw(d, h))
             if pw(k, h) == (2**h - pw(d, h)):
-                print "Result > ", d;
+                # print "Result > ", d;
                 result = -d;
                 break;
 
+    # print "---------------------";
     return result;
     # print Wmax
     # print Dwmax
@@ -166,7 +184,7 @@ def RDP(k, D):
         ki = digitD(k, D);
         bin_k.insert(0, ki);
         k = (k - ki) / 2;
-        print "k > ", k
+        # print "k > ", k
 
     return bin_k;
 
@@ -199,11 +217,17 @@ if __name__ == '__main__':
     # m = int(sys.argv[2]);
     # l = int(sys.argv[3]);
     # D = generate_random_D(m, l);
-    k = 39;
     D = [3, 23, 27, 53, 61, 71, 79, 97];
-    # D = [3, 23, 27]
     D.insert(0, 1);
-    print "D = ", D, ", n = ", len(D);
-    result = RDP(k, D);
-    print result;
-    print "Length => ", len(result)
+    k = 1;
+    f= open("guru99.txt","w+")
+    while k < 100:
+        # D = [3, 23, 27]
+        # print "D = ", D, ", n = ", len(D);
+        result = RDP(k, D);
+        if (k < 10):
+            print "k = ", k, "\t\tRDR = ", result#, "\t\tLength -> ", len(result);
+        else:
+            print "k = ", k, "\tRDR = ", result#, "\t\tLength -> ", len(result);
+        # print "Length => ", len(result)
+        k += 1
