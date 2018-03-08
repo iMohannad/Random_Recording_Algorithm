@@ -39,6 +39,14 @@ def isNAF(naf):
         i += 1;
     return True;
 
+""" convert integer k to its binary representation """
+def convertBinary(k):
+    binNum = []
+    while k > 0:
+        binNum.insert(0, k % 2);
+        k = k/2;
+    return binNum
+
 """
     wmax(k) is the largest integer w <= WMAX such that two conditions are satisified:
     1. di < k,
@@ -258,7 +266,7 @@ if __name__ == '__main__':
     D = [3, 23, 27, 53, 61, 71, 79, 97];
     D.insert(0, 1);
     k = 1;
-    naf = convertNAF(37);
+    naf = convertBinary(10);
     flag = isNAF(naf);
     print "NAF of 10 is ", naf, " and flag = ", flag
     # while k < 100:
