@@ -220,7 +220,6 @@ if __name__ == '__main__':
     D = [3, 23, 27, 53, 61, 71, 79, 97];
     D.insert(0, 1);
     k = 1;
-    f= open("guru99.txt","w+")
     while k < 100:
         # D = [3, 23, 27]
         # print "D = ", D, ", n = ", len(D);
