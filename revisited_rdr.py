@@ -181,7 +181,6 @@ def digitD(k, D):
         return k;
     Wn = get_Wn(D);
     h = wmax(k, Wn, D);
-    print "h > ", h, " k = ", k
     D_pos = get_D_pos_k(D, h, k);
     D_neg = get_D_neg_k(D, h, k);
     # print "---------------------";
@@ -266,16 +265,17 @@ if __name__ == '__main__':
     D = [3, 23, 27, 53, 61, 71, 79, 97];
     D.insert(0, 1);
     k = 1;
-    naf = convertBinary(10);
-    flag = isNAF(naf);
-    print "NAF of 10 is ", naf, " and flag = ", flag
-    # while k < 100:
-    #     # D = [3, 23, 27]
-    #     # print "D = ", D, ", n = ", len(D);
-    #     result = RDP(k, D);
-    #     if (k < 10):
-    #         print "k = ", k, "\t\tRDR = ", result#, "\t\tLength -> ", len(result);
-    #     else:
-    #         print "k = ", k, "\tRDR = ", result#, "\t\tLength -> ", len(result);
-    #     # print "Length => ", len(result)
-    #     k += 1
+    while k < 100:
+        # D = [3, 23, 27]
+        # print "D = ", D, ", n = ", len(D);
+        result = RDP(k, D);
+        binNum = convertBinary(k);
+        naf = convertNAF(k);
+        if (len(binNum) < len(result) and isNAF(binNum)):
+            result = binNum;
+        if (k < 10):
+            print "k = ", k, "\t\tRDR = ", result, "\t\tNAF = ", naf;#, "\t\tLength -> ", len(result);
+        else:
+            print "k = ", k, "\tRDR = ", result, "\t\tNAF = ", naf;#, "\t\tLength -> ", len(result);
+        # print "Length => ", len(result)
+        k += 1
