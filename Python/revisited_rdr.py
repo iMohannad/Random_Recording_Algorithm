@@ -1,7 +1,7 @@
 import math
 import random
 import sys
-
+import time
 
 """ Convert integer k to NAF format using the following algorithm
     i <- 0
@@ -220,12 +220,8 @@ def digitD(k, D):
 
 
 def RDP(k, D):
-    count = 10;
     bin_k = []; # binary representation of k to contain the result
     while k != 0:
-        count -= 1
-        if (count == 0):
-            break;
         ki = digitD(k, D);
         bin_k.insert(0, ki);
         k = (k - ki) / 2;
@@ -257,25 +253,62 @@ def generate_random_D(m, l):
     Running the program from a terminal as follows:
     python recording_alg.py k m l   (Where k, m, and l are numbers)
 """
-if __name__ == '__main__':
-    # k = int(sys.argv[1]);
-    # m = int(sys.argv[2]);
-    # l = int(sys.argv[3]);
-    # D = generate_random_D(m, l);
-    D = [3, 23, 27, 53, 61, 71, 79, 97];
-    D.insert(0, 1);
-    k = 1;
-    while k < 100:
-        # D = [3, 23, 27]
-        # print "D = ", D, ", n = ", len(D);
-        result = RDP(k, D);
-        binNum = convertBinary(k);
-        naf = convertNAF(k);
-        if (len(binNum) < len(result) and isNAF(binNum)):
-            result = binNum;
-        if (k < 10):
-            print "k = ", k, "\t\tRDR = ", result, "\t\tNAF = ", naf;#, "\t\tLength -> ", len(result);
-        else:
-            print "k = ", k, "\tRDR = ", result, "\t\tNAF = ", naf;#, "\t\tLength -> ", len(result);
-        # print "Length => ", len(result)
-        k += 1
+def RDR(m, l, k):
+    D = generate_random_D(m, l);
+    #D = [3, 23, 27, 53, 61, 71, 79, 97]
+    D.insert(0, 1)
+    #print "D > ", D
+    result = RDP(k, D)
+    naf = convertNAF(k)
+    #print "Length of RDR = ", len(result)
+    #print "Length of NAF = ", len(naf)
+    #print "k = ", k, "\nRDR = ", result, "\tLength > ", len(result)
+    #print "NAF = ", naf , "Length > ", len(naf) #, "\t\tLength -> ", len(result);
+    # print "Length => ", len(result)
+    return [D, result, naf, len(result)]
+
+def run_tests_time():
+    i = 5
+    [D, Di, naf, min_length] = RDR(1000, i, 26959956671506397946670150870196259404578077144243917216827126959956671506397946670150870196259404578077144243917216)
+    min_len = min_length
+    D_set = D
+    D_result = Di
+    naf_result = naf
+    j = 0
+    averageTime = 0
+    while i <= 300:
+        while j < 1000:
+            startTime = time.time()
+            [D, Di, naf, min_length] = RDR(1000, i, 269599566715063979466701508701962594045780726959956671506397946670150870196259404578077144243917216827126959956671506397946670150870196259404578077144243917216714424391721682712368051)
+            endTime = time.time()
+            averageTime = averageTime + (endTime - startTime)
+            j = j+1
+        averageTime = averageTime / 1000
+        print "Average Time for digit set of Size ", i, " = ", averageTime
+        averageTime = 0
+        j = 0
+        i = i+1
+
+
+if __name__ == "__main__":
+    time_flag = 0
+    if time_flag:
+        run_tests_time()
+    else:
+        i = 10
+        [D, Di, naf, min_length] = RDR(1000, i, 26959956671506397946670150870196259404578077144243917216827126959956671506397946670150870196259404578077144243917216)
+        min_len = min_length
+        D_set = D
+        D_result = Di
+        naf_result = naf
+        while i <= 300:
+            [D, Di, naf, min_length] = RDR(1000, i, 26959956671506397946670150870196259404578077144243917216827126959956671506397946670150870196259404578077144243917216)
+            if min_length < min_len :
+                D_set = D
+                D_result = Di
+                naf_result = naf
+            i = i+1
+
+        print "D = ", D_set
+        print  "RDR = ", D_result, "\tLength > ", len(D_result)
+        print "NAF = ", naf_result , "Length > ", len(naf_result)
