@@ -292,9 +292,10 @@ def run_tests_time():
 
 if __name__ == "__main__":
     time_flag = 0
+    test_flag = 0
     if time_flag:
         run_tests_time()
-    else:
+    elif test_flag:
         i = 10
         [D, Di, naf, min_length] = RDR(1000, i, 26959956671506397946670150870196259404578077144243917216827126959956671506397946670150870196259404578077144243917216)
         min_len = min_length
@@ -312,3 +313,17 @@ if __name__ == "__main__":
         print "D = ", D_set
         print  "RDR = ", D_result, "\tLength > ", len(D_result)
         print "NAF = ", naf_result , "Length > ", len(naf_result)
+    else:
+        D = generate_random_D(30, 5)
+        #D = [3, 23, 27, 53, 61, 71, 79, 97]
+        D.insert(0, 1)
+        result = RDP(100, D)
+        print "D = ", D
+        print "bin D = ", 
+        for i in D:
+            print bin(i),
+        print
+        print "Neg D = "
+        print "RDR = ", result
+        print "Binary form = ", bin(100)
+
