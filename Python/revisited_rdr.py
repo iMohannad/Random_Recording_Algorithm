@@ -211,12 +211,6 @@ def digitD(k, D):
 
     # print "---------------------"
     return result
-    # print Wmax
-    # print Dwmax
-    # print "2**Wmax ", 2**Wmax
-    # print "pw(k, Wmax) ", pw(k, Wmax)
-    # print "2**Wmax - pw(k, Wmax = ", 2**Wmax - pw(k, Wmax)
-    # print "no condition"
 
 
 def RDP(k, D):
@@ -317,13 +311,21 @@ if __name__ == "__main__":
         D = generate_random_D(30, 5)
         #D = [3, 23, 27, 53, 61, 71, 79, 97]
         D.insert(0, 1)
-        result = RDP(100, D)
+        k = 31415
+        result = RDP(k, D)
         print "D = ", D
-        print "bin D = ", 
+        print "bin D = ",
         for i in D:
             print bin(i),
         print
-        print "Neg D = "
+        D_neg = []
+        for i in D:
+            D_neg.append(2**5 - i)
+        print "Neg D = ", D_neg
+        print "Bin Neg D = "
+        for i in D_neg:
+            print bin(i),
+        print
         print "RDR = ", result
-        print "Binary form = ", bin(100)
+        print "Binary form = ", bin(k)
 
