@@ -269,7 +269,7 @@ def RDR(m, l, k):
 
 def run_tests_time():
     i = 5
-    [D, Di, naf, min_length] = RDR(1000, i, 26959956671506397946670150870196259404578077144243917216827126959956671506397946670150870196259404578077144243917216)
+    [D, Di, naf, min_length] = RDR(1000, i, 115792089210351248362697456949407573528996955234135760342422159061068512044339)
     min_len = min_length
     D_set = D
     D_result = Di
@@ -279,7 +279,7 @@ def run_tests_time():
     while i <= 300:
         while j < 1000:
             startTime = time.time()
-            [D, Di, naf, min_length] = RDR(1000, i, 269599566715063979466701508701962594045780726959956671506397946670150870196259404578077144243917216827126959956671506397946670150870196259404578077144243917216714424391721682712368051)
+            [D, Di, naf, min_length] = RDR(1000, i, 115792089210351248362697456949407573528996955234135760342422159061068512044339)
             endTime = time.time()
             averageTime = averageTime + (endTime - startTime)
             j = j+1
@@ -296,18 +296,18 @@ if __name__ == "__main__":
         run_tests_time()
     else:
         i = 10
-        [D, Di, naf, min_length] = RDR(1000, i, 26959956671506397946670150870196259404578077144243917216827126959956671506397946670150870196259404578077144243917216)
+        [D, Di, naf, min_length] = RDR(16, 5, 57)
         min_len = min_length
         D_set = D
         D_result = Di
         naf_result = naf
-        while i <= 300:
-            [D, Di, naf, min_length] = RDR(1000, i, 26959956671506397946670150870196259404578077144243917216827126959956671506397946670150870196259404578077144243917216)
-            if min_length < min_len :
-                D_set = D
-                D_result = Di
-                naf_result = naf
-            i = i+1
+        # while i <= 300:
+        #     [D, Di, naf, min_length] = RDR(1000, i, 12)
+        #     if min_length < min_len :
+        #         D_set = D
+        #         D_result = Di
+        #         naf_result = naf
+        #     i = i+1
 
         print "D = ", D_set
         print  "RDR = ", D_result, "\tLength > ", len(D_result)
