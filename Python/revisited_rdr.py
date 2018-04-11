@@ -16,35 +16,35 @@ import time
    return z
 """
 def convertNAF(k):
-    naf = [];
+    naf = []
     while k > 0:
         if (k%2 == 0):
-            naf.insert(0, 0);
+            naf.insert(0, 0)
         else:
-            zi = 2 - (k % 4);
-            naf.insert(0, zi);
-            k = k - zi;
-        k = k/2;
-    return naf;
+            zi = 2 - (k % 4)
+            naf.insert(0, zi)
+            k = k - zi
+        k = k/2
+    return naf
 
 """ An array of a number is passed to the function,
     The function determines if the number is a NAF number or not
     Which means that there is no two consecutive  1s in the array """
 def isNAF(naf):
-    length = len(naf);
-    i = 0;
+    length = len(naf)
+    i = 0
     while i < length - 1:
         if (naf[i] == 1 and naf[i] == naf[i+1]):
-            return False;
-        i += 1;
-    return True;
+            return False
+        i += 1
+    return True
 
 """ convert integer k to its binary representation """
 def convertBinary(k):
     binNum = []
     while k > 0:
-        binNum.insert(0, k % 2);
-        k = k/2;
+        binNum.insert(0, k % 2)
+        k = k/2
     return binNum
 
 """
@@ -65,11 +65,11 @@ def convertBinary(k):
         an integer that satisifies the two coniditons for wmax(k)
 """
 def wmax(k, Wn, D):
-    w = Wn + 2;
+    w = Wn + 2
     for i in range(Wn + 2, 1, -1):
-        d_flag = False;
-        D_neg = get_D_neg(D, i);
-        D_pos = get_D_pos(D, i);
+        d_flag = False
+        D_neg = get_D_neg(D, i)
+        D_pos = get_D_pos(D, i)
         # print "------------ WMAX = ", i, " ----------------"
         # print "D_pos_", i, " = ", D_pos
         # print "D_neg_", i, " = ", D_neg
@@ -78,20 +78,20 @@ def wmax(k, Wn, D):
         for d in D:
             if d < k:
                 if (pw(k, i) == pw(d, i)):
-                    return i;
+                    return i
                 if (pw(k, i) == 2**i - pw(d, i)):
-                    return i;
+                    return i
 
         # print "--------------------------------------------"
-    return w;
+    return w
 
 
 
 # pw(k) = k % (2**w)
 def pw(k, w):
     if (k < 0):
-        return k + (2**w);
-    return k % (2**w);
+        return k + (2**w)
+    return k % (2**w)
 
 """
     Calculcate the set D_w
@@ -109,25 +109,25 @@ def pw(k, w):
         a list that contains Dw which is pw(d) for each d in D
 """
 def get_D_pos(D, w):
-    D_pos = [];
+    D_pos = []
     for d in D:
         entry = pw(d, w)
         if (entry not in D_pos):
             D_pos.append(entry)
-    D_pos.sort();
-    return D_pos;
+    D_pos.sort()
+    return D_pos
 
 
 def get_D_pos_k(D, w, k):
-    D_pos = [];
+    D_pos = []
     for d in D:
         if (d > k):
-            break;
+            break
         entry = pw(d, w)
         if (entry not in D_pos):
             D_pos.append(entry)
-    D_pos.sort();
-    return D_pos;
+    D_pos.sort()
+    return D_pos
 """
     Calculcate the set D_w' by using Dw
 
@@ -144,73 +144,73 @@ def get_D_pos_k(D, w, k):
         a list that contains Dw and Dw_Neg
 """
 def get_D_neg(D, w):
-    D_pos = get_D_pos(D, w);
-    Dw_Neg = [];
-    const = 2**w;
+    D_pos = get_D_pos(D, w)
+    Dw_Neg = []
+    const = 2**w
     for d in D_pos:
-        Dw_Neg.append(const - d);
+        Dw_Neg.append(const - d)
 
-    Dw_Neg.sort();
-    return Dw_Neg;
+    Dw_Neg.sort()
+    return Dw_Neg
 
 def get_D_neg_k(D, w, k):
-    D_pos = get_D_pos_k(D, w, k);
-    Dw_Neg = [];
-    const = 2**w;
+    D_pos = get_D_pos_k(D, w, k)
+    Dw_Neg = []
+    const = 2**w
     for d in D_pos:
-        Dw_Neg.append(const - d);
+        Dw_Neg.append(const - d)
 
-    Dw_Neg.sort();
-    return Dw_Neg;
+    Dw_Neg.sort()
+    return Dw_Neg
 
 # Get the union of D+ and D-
 def get_Dw(D, w):
-    D_pos = get_D_pos(D, w);
-    D_neg = get_D_neg(D, w);
-    result = list(set().union(D_pos, D_neg));
-    result.sort();
-    return result;
+    D_pos = get_D_pos(D, w)
+    D_neg = get_D_neg(D, w)
+    result = list(set().union(D_pos, D_neg))
+    result.sort()
+    return result
 
 def get_Wn(D):
-    return int(math.floor(math.log(max(D), 2)));
+    return int(math.floor(math.log(max(D), 2)))
 
 def digitD(k, D):
     if k % 2 == 0:
-        return 0;
+        return 0
     if k == 1:
-        return k;
-    Wn = get_Wn(D);
-    h = wmax(k, Wn, D);
-    D_pos = get_D_pos_k(D, h, k);
-    D_neg = get_D_neg_k(D, h, k);
-    # print "---------------------";
+        return k
+    Wn = get_Wn(D)
+    h = wmax(k, Wn, D)
+    D_pos = get_D_pos_k(D, h, k)
+    D_neg = get_D_neg_k(D, h, k)
+    # print "---------------------"
     # print "k = ", k, " h = ", h
     # print "D_pos = ", D_pos
-    # print "D_neg = ", D_neg;
-    result = -100;
-    flag_cond1 = False;
+    # print "D_neg = ", D_neg
+    result = -100
+    flag_cond1 = False
     if pw(k, h) in D_pos:
         for d in D:
             # if d >= k:
-            #     continue;
+            #     continue
             # print "pw(k, h) > ", pw(k, h), "pw(", d, ", h) > ", pw(d, h)
             if pw(k, h) == pw(d, h):
-                # print "Result > ", d;
-                result = d;
-                break;
+                # print "Result > ", d
+                result = d
+                break
     else:
         # print "2**h - pw(", k, ", h) > ", (2**h - pw(k, h))
         for d in D:
             # if d >= k:
-            #     continue;
+            #     continue
             # print "pw(k, h) > ", pw(k, h), "2**h - pw(d, h) > ", (2**h - pw(d, h))
             if pw(k, h) == (2**h - pw(d, h)):
-                # print "Result > ", d;
-                result = -d;
-                break;
+                # print "Result > ", d
+                result = -d
+                break
 
-    # print "---------------------";
-    return result;
+    # print "---------------------"
+    return result
     # print Wmax
     # print Dwmax
     # print "2**Wmax ", 2**Wmax
@@ -220,29 +220,29 @@ def digitD(k, D):
 
 
 def RDP(k, D):
-    bin_k = []; # binary representation of k to contain the result
+    bin_k = [] # binary representation of k to contain the result
     while k != 0:
-        ki = digitD(k, D);
-        bin_k.insert(0, ki);
-        k = (k - ki) / 2;
+        ki = digitD(k, D)
+        bin_k.insert(0, ki)
+        k = (k - ki) / 2
         # print "k > ", k
 
-    return bin_k;
+    return bin_k
 
 
 def generate_random_D(m, l):
     if l > (m+1)/2:
-        raise ValueError("l should satisfy the condition l <= (m+1)/2");
-    D = [];
+        raise ValueError("l should satisfy the condition l <= (m+1)/2")
+    D = []
     for i in range(2, l+1, 1):
-        odd = False;
+        odd = False
         while not odd:
-            x = random.randint(3, m);
+            x = random.randint(3, m)
             if(x % 2 != 0 and x not in D):
-                odd = True;
-        D.append(x);
-    D.sort();
-    return D;
+                odd = True
+        D.append(x)
+    D.sort()
+    return D
 
 """ To run the program, you need to input 3 values,
     k: The number to be converted
@@ -254,7 +254,7 @@ def generate_random_D(m, l):
     python recording_alg.py k m l   (Where k, m, and l are numbers)
 """
 def RDR(m, l, k):
-    D = generate_random_D(m, l);
+    D = generate_random_D(m, l)
     #D = [3, 23, 27, 53, 61, 71, 79, 97]
     D.insert(0, 1)
     #print "D > ", D
@@ -263,7 +263,7 @@ def RDR(m, l, k):
     #print "Length of RDR = ", len(result)
     #print "Length of NAF = ", len(naf)
     #print "k = ", k, "\nRDR = ", result, "\tLength > ", len(result)
-    #print "NAF = ", naf , "Length > ", len(naf) #, "\t\tLength -> ", len(result);
+    #print "NAF = ", naf , "Length > ", len(naf) #, "\t\tLength -> ", len(result)
     # print "Length => ", len(result)
     return [D, result, naf, len(result)]
 
@@ -292,9 +292,10 @@ def run_tests_time():
 
 if __name__ == "__main__":
     time_flag = 0
+    test_flag = 0
     if time_flag:
         run_tests_time()
-    else:
+    elif test_flag:
         i = 10
         [D, Di, naf, min_length] = RDR(16, 5, 57)
         min_len = min_length
@@ -312,3 +313,17 @@ if __name__ == "__main__":
         print "D = ", D_set
         print  "RDR = ", D_result, "\tLength > ", len(D_result)
         print "NAF = ", naf_result , "Length > ", len(naf_result)
+    else:
+        D = generate_random_D(30, 5)
+        #D = [3, 23, 27, 53, 61, 71, 79, 97]
+        D.insert(0, 1)
+        result = RDP(100, D)
+        print "D = ", D
+        print "bin D = ", 
+        for i in D:
+            print bin(i),
+        print
+        print "Neg D = "
+        print "RDR = ", result
+        print "Binary form = ", bin(100)
+
