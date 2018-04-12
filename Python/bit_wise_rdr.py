@@ -1,3 +1,5 @@
+import math
+
 
 def get_Wn(D):
     return int(math.floor(math.log(max(D), 2)))
