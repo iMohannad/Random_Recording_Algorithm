@@ -11,9 +11,9 @@ def main():
     bin_k = bin(k)[2:]
     Wn = get_Wn(D)
     flag_d = 0
-    max_length = bin(max(D))
+    max_length = Wn + 2
     while bin_k != '':
-        if bin_k[len(bin_k)-1] == 0:
+        if bin_k[len(bin_k)-1] == '0':
             rdr.insert(0, 0)
             bin_k = bin_k[:len(bin_k)-1]
             continue
@@ -42,7 +42,7 @@ def main():
             if flag_d == 1:
                 flag_d = 0
                 break
-
+    print "Final RDR = ", rdr
 
 if __name__ == '__main__':
     main()
