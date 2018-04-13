@@ -321,7 +321,10 @@ if __name__ == "__main__":
         D_neg = []
         for j in range(5,1, -1):
             for i in D:
-                D_neg.append(2**j - i)
+                val = 2**j - i
+                while val < 0:
+                    val = val + 2**j
+                D_neg.append(val)
             print "Neg D(", j,") = ", D_neg
             print "Bin Neg D(", j, ") = ",
             for i in D_neg:
