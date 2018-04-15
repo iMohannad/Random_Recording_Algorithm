@@ -319,13 +319,18 @@ if __name__ == "__main__":
             print bin(i),
         print
         D_neg = []
-        for i in D:
-            D_neg.append(2**5 - i)
-        print "Neg D = ", D_neg
-        print "Bin Neg D = "
-        for i in D_neg:
-            print bin(i),
-        print
+        for j in range(5,1, -1):
+            for i in D:
+                val = 2**j - i
+                while val < 0:
+                    val = val + 2**j
+                D_neg.append(val)
+            print "Neg D(", j,") = ", D_neg
+            print "Bin Neg D(", j, ") = ",
+            for i in D_neg:
+                print bin(i),
+            print
+            D_neg = []
         print "RDR = ", result
         print "Binary form = ", bin(k)
 
