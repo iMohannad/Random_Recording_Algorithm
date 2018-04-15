@@ -25,22 +25,26 @@ def main():
                     length_bin_d = len(bin(d))
                     # Neg D
                     neg_d = 2**i - d
+                    while neg_d < 0:
+                        neg_d = neg_d + 2**i
                     print "neg_d = ", neg_d, " i = ", i, " d = ", d
                     neg_bin_d = bin(neg_d)[2:]
                     print "neg_bin_d = ", neg_bin_d
                     length_neg_bin_d = len(neg_bin_d)
-                    if int(bin_d, 2) ^ int(bin_k[len(bin_k)-length_bin_d:], 2) == 0:
+                    if length_bin_d == max_length and int(bin_d, 2) ^ int(bin_k[len(bin_k)-length_bin_d:], 2) == 0:
                         rdr.insert(0, d)
                         bin_k = bin_k[:len(bin_k)-length_bin_d]
                         flag_d = 1
                         break
-                    if int(neg_bin_d, 2) ^ int(bin_k[len(bin_k)-length_neg_bin_d:], 2) == 0:
+                    if length_neg_bin_d == max_length and int(neg_bin_d, 2) ^ int(bin_k[len(bin_k)-length_neg_bin_d:], 2) == 0:
                         rdr.insert(0, -d)
                         bin_k = bin_k[:len(bin_k)-length_neg_bin_d-1]
                         flag_d = 1
                         break
+                    max_length = max_length - 1
             if flag_d == 1:
                 flag_d = 0
+                max_length = bin(max(D))
                 break
 
 
