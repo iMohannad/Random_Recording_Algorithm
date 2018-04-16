@@ -55,15 +55,15 @@ def main():
                         # Inserting zeros
                         for j in range(0, length_neg_bin_d):
                             rdr.insert(0, 0)
-
+                        bin_s = list(bin_k)
+                        print bin_s
                         carry = '0'
                         # Find number of zeros in the beginning
                         
                         bin_k = bin_k[:len(bin_k)-(s-1)]
                         print "bin_k > ", bin_k
-                        bin_s = list(bin_k)
-                        print bin_s
-                        print bin_s[len(bin_k)-1]
+                        
+                        
                         if bin_s[len(bin_k)-1] == '1':
                             carry = '1'
                             index =len(bin_k)-1
