@@ -47,6 +47,7 @@ def main():
                         for j in range(0, length_bin_d):
                             rdr.insert(0, 0)
                         bin_k = bin_k[:len(bin_k)-length_bin_d]
+                        print "update bin_k > ", bin_k
                         flag_d = 1
                         break
                     elif length_neg_bin_d == (s-1) and int(neg_bin_d, 2) ^ int(bin_k[len(bin_k)-length_neg_bin_d:], 2) == 0:
