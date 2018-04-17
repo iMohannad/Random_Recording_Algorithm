@@ -39,10 +39,8 @@ def main():
                 print "neg_bin_d = ", neg_bin_d
                 length_neg_bin_d = len(neg_bin_d)
                 if bin_d <= bin_k:
-                    if s == 5 and d == 27:
-                        print bin_k[len(bin_k) - (s-1):]
-                        print "bin_d > ", int(neg_bin_d, 2) , " bin_k > ", int(bin_k[len(bin_k)-(s-1):], 2), " Value > ", int(neg_bin_d, 2) ^ int(bin_k[len(bin_k)-(s-1):], 2)
-
+                    print bin_k[len(bin_k) - (s-1):]
+                    print "neg bin_d > ", int(neg_bin_d, 2) , " bin_k > ", int(bin_k[len(bin_k)-(s-1):], 2), " Value > ", int(neg_bin_d, 2) ^ int(bin_k[len(bin_k)-(s-1):], 2)
                     print "len bin_k > ", len(bin_k), " length of d = ", length_bin_d
                     print "int d = ", int(bin_d, 2), ", d = ", d, " bin_k = ", int(bin_k[len(bin_k)-length_bin_d-1:], 2)
                     if length_bin_d == (s-1) and int(bin_d, 2) ^ int(bin_k[len(bin_k)-(s-1):], 2) == 0:
