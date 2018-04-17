@@ -24,6 +24,7 @@ def main():
             count = count + 1
             if count == 10:
                 bin_k = ''
+                flag_d = 1
                 print rdr
                 break
             for d in D[::-1]:
@@ -40,6 +41,11 @@ def main():
                 print " neg_bin_d = ", neg_bin_d
                 length_neg_bin_d = len(neg_bin_d)
                 if bin_d <= bin_k:
+                    if int(bin_d, 2) ^ int(bin_k, 2) == 0:
+                        rdr.insert(0, d)
+                        print rdr
+                        bin_k = ''
+                        break
                     print bin_k[len(bin_k) - s:]
                     print "neg bin_d > ", int(neg_bin_d, 2) , " bin_k > ", int(bin_k[len(bin_k)-s:], 2), " Value > ", int(neg_bin_d, 2) ^ int(bin_k[len(bin_k)-s:], 2)
                     print "len bin_k > ", len(bin_k), " length of d = ", length_bin_d
@@ -80,6 +86,7 @@ def main():
                         while carry == '1':
                             print index
                             if index == 0:
+                                bin_s[index] = '0'
                                 bin_s.insert(0, '1')
                                 carry = '0'
                                 break
