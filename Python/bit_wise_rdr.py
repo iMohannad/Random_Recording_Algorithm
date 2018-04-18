@@ -6,6 +6,11 @@ def get_Wn(D):
 
 def main():
     D = [1, 3, 23, 27]
+    # D = [1, 17, 21, 25, 27]
+    # D = [1, 9, 13, 17, 21]
+    # D = [1, 3, 5, 11, 19]
+    # D =  [1, 5, 19, 25, 27]
+    # D =  [1, 9, 15, 17, 23] # Gives me problems
     k = 31415
     rdr = []
     bin_k = bin(k)[2:]
@@ -40,7 +45,8 @@ def main():
                 neg_bin_d = bin(neg_d)[2:]
                 print " neg_bin_d = ", neg_bin_d
                 length_neg_bin_d = len(neg_bin_d)
-                if len(bin_d) <= len(bin_k) and s <= len(bin_k):
+                print "bin_d> ", bin_d, " bin_k > ", bin_k, "bin_d < bin_k = ", bin_d <= bin_k
+                if bin_d <= bin_k and length_bin_d <= len(bin_k):
                     print "----------------------bin_d less than bin_k"
                     # If d value equal to k
                     if int(bin_d, 2) ^ int(bin_k, 2) == 0:
@@ -63,7 +69,7 @@ def main():
                         print "RDR > ", rdr
                         flag_d = 1
                         break
-                    elif int(neg_bin_d, 2) ^ int(bin_k[len(bin_k)-length_neg_bin_d:], 2) == 0:
+                    elif int(neg_bin_d, 2) ^ int(bin_k[len(bin_k)-length_neg_bin_d:], 2) == 0 and neg_d != 1:
                         print "~~~~~~~~~~~~~~~~~~~~~~~~~~"
                         rdr.insert(0, -d)
                         # Inserting zeros
