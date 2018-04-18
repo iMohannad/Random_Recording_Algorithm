@@ -22,7 +22,7 @@ def main():
             continue
         for s in range(Wn + 2, 2, -1):
             count = count + 1
-            if count == 10:
+            if count == 25:
                 bin_k = ''
                 flag_d = 1
                 print rdr
@@ -36,11 +36,13 @@ def main():
                 neg_d = 2**s - d
                 while neg_d < 0:
                     neg_d = neg_d + 2**s
-                print "neg_d = ", neg_d, " s = ", s, 
+                print "neg_d = ", neg_d, " s = ", s,
                 neg_bin_d = bin(neg_d)[2:]
                 print " neg_bin_d = ", neg_bin_d
                 length_neg_bin_d = len(neg_bin_d)
-                if bin_d <= bin_k:
+                if len(bin_d) <= len(bin_k) and s <= len(bin_k):
+                    print "----------------------bin_d less than bin_k"
+                    # If d value equal to k
                     if int(bin_d, 2) ^ int(bin_k, 2) == 0:
                         rdr.insert(0, d)
                         print rdr
@@ -54,10 +56,11 @@ def main():
                     if len(bin_d[length_bin_d-s:]) == (s) and int(bin_d, 2) ^ int(bin_k[len(bin_k)-(s):], 2) == 0:
                         rdr.insert(0, d)
                         print "it went innnnnnnnnnnnnnn"
-                        for j in range(0, s):
+                        for j in range(0, length_bin_d-1):
                             rdr.insert(0, 0)
                         bin_k = bin_k[:len(bin_k)-length_bin_d]
                         print "update bin_k > ", bin_k
+                        print "RDR > ", rdr
                         flag_d = 1
                         break
                     elif int(neg_bin_d, 2) ^ int(bin_k[len(bin_k)-length_neg_bin_d:], 2) == 0:
@@ -70,12 +73,17 @@ def main():
 
                         bin_s = list(bin_k)
                         print bin_s
-                        print "position > ", bin_s[len(bin_k)-s-1]
+                        print "bin_s[", len(bin_k)-s-1,"] > ",bin_s[len(bin_k)-s-1]
                         carry = '0'
                         length_bin_s = len(bin_s)
                         # Check up the carry
                         # Index of next bit
-                        index =len(bin_k)-length_neg_bin_d
+                        index =len(bin_k)-s-2
+                        if (len(bin_k)-s-1) == -1:
+                            rdr.insert(0, 1)
+                            flag_d = 1
+                            bin_k = ''
+                            break
                         if bin_s[len(bin_k)-s-1] == '1':
                             carry = '1'
                             bin_s[len(bin_k)-s-1] = '0'
@@ -85,6 +93,7 @@ def main():
 
                         while carry == '1':
                             print index
+
                             if index == 0:
                                 bin_s[index] = '0'
                                 bin_s.insert(0, '1')
