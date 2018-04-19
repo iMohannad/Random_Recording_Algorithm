@@ -5,12 +5,13 @@ def get_Wn(D):
     return int(math.floor(math.log(max(D), 2)))
 
 def main():
-    D = [1, 3, 23, 27]
+    # D = [1, 3, 23, 27]
     # D = [1, 17, 21, 25, 27]
     # D = [1, 9, 13, 17, 21]
     # D = [1, 3, 5, 11, 19]
     # D =  [1, 5, 19, 25, 27]
-    # D =  [1, 9, 15, 17, 23] # Gives me problems
+    # D =  [1, 9, 15, 17, 23] # Gives me problems .. problems solved
+    D =  [1, 3, 9, 11, 29]
     k = 31415
     rdr = []
     bin_k = bin(k)[2:]
@@ -25,10 +26,11 @@ def main():
             bin_k = bin_k[:len(bin_k)-1]
             print rdr
             continue
-        for s in range(Wn + 2, 2, -1):
+        for s in range(Wn + 2, 1, -1):
             count = count + 1
-            if count == 25:
+            if count >= 10:
                 bin_k = ''
+                print "COUNT REACHED"
                 flag_d = 1
                 print rdr
                 break
@@ -86,10 +88,17 @@ def main():
                         # Index of next bit
                         index =len(bin_k)-s-2
                         if (len(bin_k)-s-1) == -1:
-                            rdr.insert(0, 1)
-                            flag_d = 1
-                            bin_k = ''
-                            break
+                            if (s == length_neg_bin_d):
+                                rdr.insert(0, 1)
+                                flag_d = 1
+                                bin_k = ''
+                                break
+                            else:
+                                flag_d = 1
+                                bin_s.insert(0, '1')
+                                bin_s = bin_s[:len(bin_s) - length_neg_bin_d]
+                                bin_k = "".join(bin_s)
+                                break
                         if bin_s[len(bin_k)-s-1] == '1':
                             carry = '1'
                             bin_s[len(bin_k)-s-1] = '0'
