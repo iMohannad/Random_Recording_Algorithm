@@ -5,13 +5,13 @@ def get_Wn(D):
     return int(math.floor(math.log(max(D), 2)))
 
 def main():
-    # D = [1, 3, 23, 27]
+    D = [1, 3, 23, 27]
     # D = [1, 17, 21, 25, 27]
     # D = [1, 9, 13, 17, 21]
     # D = [1, 3, 5, 11, 19]
     # D =  [1, 5, 19, 25, 27]
     # D =  [1, 9, 15, 17, 23] # Gives me problems .. problems solved
-    D =  [1, 3, 9, 11, 29]
+    # D =  [1, 3, 9, 11, 29]
     k = 31415
     rdr = []
     bin_k = bin(k)[2:]
@@ -34,7 +34,7 @@ def main():
                 flag_d = 1
                 print rdr
                 break
-            for d in D[::-1]:
+            for d in D:
                 print "-----------------------new d-----------------------"
                 bin_d = bin(d)[2:]
                 length_bin_d = len(bin_d)
@@ -110,14 +110,17 @@ def main():
                             print index
 
                             if index == 0:
-                                bin_s[index] = '0'
-                                bin_s.insert(0, '1')
-                                carry = '0'
+                                if (bin_s[index] == '1'):
+                                    bin_s[index] = '0'
+                                    bin_s.insert(0, '1')
+                                    carry = '0'
+                                else:
+                                    bin_s[index] = '1'
                                 break
                             carry = '1' if bin_s[index] == '1' else '0'
                             bin_s[index] = '0' if bin_s[index] == '1' else '1'
                             index = index - 1
-                        
+
                         # Find number of zeros in the beginning
                         # index = 0
                         # while int(bin_s[len(bin_s)-index-1], 2) ^ int(neg_bin_d[len(neg_bin_d)-index-1]) == 0:
@@ -138,6 +141,11 @@ def main():
                 flag_d = 0
                 s = Wn + 2
                 break
+            # else:
+            #     flag_d = 0
+            #     rdr.insert(0, 1)
+            #     bin_k = bin_k[:len(bin_k)-1]
+            #     break
     print "Final RDR = ", rdr
 
 if __name__ == '__main__':
