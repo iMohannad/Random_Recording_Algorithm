@@ -132,6 +132,8 @@ def main():
                         flag_d = 1
                         break
                     elif int(neg_bin_d, 2) ^ int(bin_k[len(bin_k)-length_neg_bin_d:], 2) == 0 and neg_d != 1:
+                        if bin_k[len(bin_k)-s-1] == '1':
+                            continue
                         print "~~~~~~~~~~~~~~~~~~~~~~~~~~"
                         rdr.insert(0, -d)
                         # Inserting zeros
