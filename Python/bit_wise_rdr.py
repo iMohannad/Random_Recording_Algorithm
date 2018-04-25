@@ -1,5 +1,19 @@
 import math
 
+def generate_random_D(m, l):
+    if l > (m+1)/2:
+        raise ValueError("l should satisfy the condition l <= (m+1)/2")
+    D = []
+    for i in range(2, l+1, 1):
+        odd = False
+        while not odd:
+            x = random.randint(3, m)
+            if(x % 2 != 0 and x not in D):
+                odd = True
+        D.append(x)
+    D.sort()
+    return D
+
 def add_carry(bin_k, len_k, s, length_neg_bin_d, rdr):
     bin_s = list(bin_k)
     print bin_s
@@ -152,6 +166,28 @@ def main():
             rdr.insert(0, 1)
             bin_k = bin_k[:len(bin_k)-1]
     print "Final RDR = ", rdr
+
+def run_tests_time():
+    i = 5
+    [D, Di, naf, min_length] = RDR(1000, i, 26959956671506397946670150870196259404578077144243917216827126959956671506397946670150870196259404578077144243917216)
+    min_len = min_length
+    D_set = D
+    D_result = Di
+    naf_result = naf
+    j = 0
+    averageTime = 0
+    while i <= 300:
+        while j < 1000:
+            startTime = time.time()
+            [D, Di, naf, min_length] = RDR(1000, i, 269599566715063979466701508701962594045780726959956671506397946670150870196259404578077144243917216827126959956671506397946670150870196259404578077144243917216714424391721682712368051)
+            endTime = time.time()
+            averageTime = averageTime + (endTime - startTime)
+            j = j+1
+        averageTime = averageTime / 1000
+        print "Average Time for digit set of Size ", i, " = ", averageTime
+        averageTime = 0
+        j = 0
+        i = i+1
 
 if __name__ == '__main__':
     main()
