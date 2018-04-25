@@ -5,10 +5,12 @@ def get_Wn(D):
     return int(math.floor(math.log(max(D), 2)))
 
 def main():
-    D = [1, 3, 23, 27]
+    # D = [1, 3, 23, 27]
     # D = [1, 17, 21, 25, 27]
     # D = [1, 9, 13, 17, 21]
     # D = [1, 3, 5, 11, 19]
+    # D =  [1, 9, 11, 27, 29]
+    D =  [1, 3, 9, 15, 19]
     # D =  [1, 5, 19, 25, 27]
     # D =  [1, 9, 15, 17, 23] # Gives me problems .. problems solved
     # D =  [1, 3, 9, 11, 29]
@@ -28,7 +30,7 @@ def main():
             continue
         for s in range(Wn + 2, 1, -1):
             count = count + 1
-            if count >= 10:
+            if count >= 20:
                 bin_k = ''
                 print "COUNT REACHED"
                 flag_d = 1
@@ -55,6 +57,7 @@ def main():
                         rdr.insert(0, d)
                         print rdr
                         bin_k = ''
+                        flag_d = 1
                         break
                     print bin_k[len(bin_k) - s:]
                     print "neg bin_d > ", int(neg_bin_d, 2) , " bin_k > ", int(bin_k[len(bin_k)-s:], 2), " Value > ", int(neg_bin_d, 2) ^ int(bin_k[len(bin_k)-s:], 2)
@@ -141,11 +144,12 @@ def main():
                 flag_d = 0
                 s = Wn + 2
                 break
-            # else:
-            #     flag_d = 0
-            #     rdr.insert(0, 1)
-            #     bin_k = bin_k[:len(bin_k)-1]
-            #     break
+        print "S >>>>>>>>>> ", s
+        if flag_d == 0 and s == 2:
+            rdr.insert(0, 1)
+            print rdr, " < UPDATEDDDDDDDDDDDDDDDD"
+            bin_k = bin_k[:len(bin_k)-1]
+            print "UPDATED BIN_K > ", bin_k
     print "Final RDR = ", rdr
 
 if __name__ == '__main__':
