@@ -2,6 +2,12 @@ import math
 import random
 import time
 
+def check_rdr(rdr):
+    for i in range (0, len(rdr)-1):
+        if rdr[i] != 0 and rdr[i+1] != 0:
+            return False
+    return True
+
 def generate_random_D(m, l):
     if l > (m+1)/2:
         raise ValueError("l should satisfy the condition l <= (m+1)/2")
@@ -14,6 +20,7 @@ def generate_random_D(m, l):
                 odd = True
         D.append(x)
     D.sort()
+    D.insert(0, 1)
     return D
 
 def add_carry(bin_k, len_k, s, length_neg_bin_d, rdr):
@@ -87,6 +94,7 @@ def RDR_algorithm(D, k):
     # D =  [1, 5, 19, 25, 27]
     # D =  [1, 9, 15, 17, 23] # Gives me problems .. problems solved
     # D =  [1, 3, 9, 11, 29]
+    # D = [1, 5, 25, 43, 47]
     # k = 31415
     rdr = []
     bin_k = bin(k)[2:]
@@ -122,7 +130,7 @@ def RDR_algorithm(D, k):
                 neg_bin_d = bin(neg_d)[2:]
                 # print " neg_bin_d = ", neg_bin_d
                 length_neg_bin_d = len(neg_bin_d)
-                # print "bin_d> ", bin_d, " bin_k > ", bin_k, "bin_d < bin_k = ", bin_d <= bin_k
+                # print "bin_d> ", bin_d, " bin_k > ", bin_k, "bin_d < bin_k = ", bin_d <= bin_k, " len(bin_d) > ", len(bin_d)
                 if bin_d <= bin_k and length_bin_d <= len(bin_k):
                     # print "----------------------bin_d less than bin_k"
                     # If d value equal to k
@@ -137,7 +145,7 @@ def RDR_algorithm(D, k):
                     # print "len bin_k > ", len(bin_k), " length of d = ", length_bin_d
                     # print "int d = ", int(bin_d, 2), ", d = ", d, " bin_k = ", int(bin_k[len(bin_k)-length_bin_d-1:], 2)
                     # print "length of bin_d", len(bin_d[length_bin_d-s:])
-                    if len(bin_d[length_bin_d-s:]) == (s) and int(bin_d, 2) ^ int(bin_k[len(bin_k)-(s):], 2) == 0:
+                    if bin_d != 1 and len(bin_d[length_bin_d-s+1:]) == (s-1) and int(bin_d, 2) ^ int(bin_k[len(bin_k)-(s):], 2) == 0:
                         rdr.insert(0, d)
                         # print "it went innnnnnnnnnnnnnn"
                         for j in range(0, length_bin_d-1):
@@ -148,9 +156,9 @@ def RDR_algorithm(D, k):
                         flag_d = 1
                         break
                     elif int(neg_bin_d, 2) ^ int(bin_k[len(bin_k)-length_neg_bin_d:], 2) == 0 and neg_d != 1:
-                        if bin_k[len(bin_k)-s-1] == '1':
-                            continue
                         # print "~~~~~~~~~~~~~~~~~~~~~~~~~~"
+                        if (len(bin_k)-s-1) != -1 and bin_k[len(bin_k)-s-1] == '1':
+                            continue
                         rdr.insert(0, -d)
                         # Inserting zeros
                         # print "length neg_bin d > ", length_neg_bin_d
@@ -158,6 +166,7 @@ def RDR_algorithm(D, k):
                             rdr.insert(0, 0)
                         bin_k = add_carry(bin_k, len(bin_k), s, length_neg_bin_d, rdr)
                         flag_d = 1
+                        # print rdr
                         break
                     max_length = max_length - 1
             if flag_d == 1:
@@ -175,20 +184,29 @@ def run_tests_time():
     i = 5
     j = 0
     averageTime = 0
-    while i <= 300:
+    while i <= 100:
         while j < 1000:
-            D = generate_random_D(i*2, i)
+            D = generate_random_D(i*10, i)
             startTime = time.time()
-            [rdr, min_length] = RDR_algorithm(D, 2695995667150639794667015087019625940457807714424391721682712368051)
+            [rdr, min_length] = RDR_algorithm(D, 31415)
             endTime = time.time()
             averageTime = averageTime + (endTime - startTime)
             j = j+1
+            check_flag = check_rdr(rdr)
+            if check_flag == False:
+                print " -------------------- False Flag -----------------------------"
+                print "D > ", D
+                print rdr
+                break
             # print "RDR > ", rdr, " min_length > ", min_length
         averageTime = averageTime / 1000
-        print "Average Time for digit set of Size ", i, " = ", averageTime
+        print "rdr = ", rdr, " Min Length = ", min_length, " Average Time for digit set of Size ", i, " = ", averageTime
         averageTime = 0
         j = 0
         i = i+1
 
 if __name__ == '__main__':
     run_tests_time()
+    # [rdr, min_len] = RDR_algorithm([1, 3, 7, 23, 25], 31415)
+    # print "RDR > ", rdr
+    # print "Min_len > ", min_len
