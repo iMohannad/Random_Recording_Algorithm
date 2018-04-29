@@ -95,21 +95,19 @@ def RDR_algorithm(D, k):
     while bin_k != '':
         # Remove leading zeros
         if bin_k[len(bin_k)-1] == '0':
-            print "###################################"
-            print "                ZERO               "
-            print "-----------------------------------"
+            # print "###################################"
+            # print "                ZERO               "
+            # print "-----------------------------------"
             rdr.insert(0, 0)
             bin_k = bin_k[:len(bin_k)-1]
-            print "RDR = ", rdr
-            print "-----------------------------------"
+            # print "RDR = ", rdr
+            # print "-----------------------------------"
             continue
         for s in range(Wn + 2, 1, -1):
             count = count + 1
             # if count >= 20:
             #     bin_k = ''
-            #     print "COUNT REACHED"
             #     flag_d = 1
-            #     print rdr
             #     break
             for d in D:
                 bin_d = bin(d)[2:]
@@ -121,53 +119,53 @@ def RDR_algorithm(D, k):
                 neg_bin_d = bin(neg_d)[2:]
                 length_neg_bin_d = len(neg_bin_d)
                 if length_bin_d <= len(bin_k):
-                    print "~~~~~~~~~~~~~~~~~~~~~*******************~~~~~~~~~~~~~~~~~~~~~~~"
-                    print "s = ", s, ", d = ", bin_d, ", neg_d = ", neg_bin_d, ", k = ", bin_k, "bin_d < bin_k = ", bin_d <= bin_k, " len(bin_d) > ", len(bin_d)
+                    # print "~~~~~~~~~~~~~~~~~~~~~*******************~~~~~~~~~~~~~~~~~~~~~~~"
+                    # print "s = ", s, ", d = ", bin_d, ", neg_d = ", neg_bin_d, ", k = ", bin_k, "bin_d < bin_k = ", bin_d <= bin_k, " len(bin_d) > ", len(bin_d)
                     # If d value equal to k
                     if int(bin_d, 2) ^ int(bin_k, 2) == 0:
-                        print "###################################"
-                        print "               EQUAL               "
-                        print "-----------------------------------"
+                        # print "###################################"
+                        # print "               EQUAL               "
+                        # print "-----------------------------------"
                         rdr.insert(0, d)
-                        print "RDR = ", rdr
+                        # print "RDR = ", rdr
                         bin_k = ''
                         flag_d = 1
-                        print "-----------------------------------"
+                        # print "-----------------------------------"
                         break
-                    print "bin_d[length_bin_d-s+1:] = ", bin_d[length_bin_d-s+1:], ", bin_k[len(bin_k)-(s):] = ", bin_k[len(bin_k)-(s):]
+                    # print "bin_d[length_bin_d-s+1:] = ", bin_d[length_bin_d-s+1:], ", bin_k[len(bin_k)-(s):] = ", bin_k[len(bin_k)-(s):]
                     if d != 1 and len(bin_d[length_bin_d-s+1:]) == (s-1) and int(bin_d, 2) ^ int(bin_k[len(bin_k)-(s):], 2) == 0:
                         rdr.insert(0, d)
                         for j in range(0, length_bin_d-1):
                             rdr.insert(0, 0)
                         bin_k = bin_k[:len(bin_k)-length_bin_d]
-                        print "###################################"
-                        print "              POSITIVE             "
-                        print "-----------------------------------"
-                        print "D = ", bin_d, ", k = ", bin_k
-                        print "RDR = ", rdr
-                        print "-----------------------------------"
+                        # print "###################################"
+                        # print "              POSITIVE             "
+                        # print "-----------------------------------"
+                        # print "D = ", bin_d, ", k = ", bin_k
+                        # print "RDR = ", rdr
+                        # print "-----------------------------------"
                         flag_d = 1
                         break
                     elif int(neg_bin_d, 2) ^ int(bin_k[len(bin_k)-length_neg_bin_d:], 2) == 0 and neg_d != 1:
-                        print "###################################"
-                        print "              NEGATIVE             "
-                        print "-----------------------------------"
-                        if (len(bin_k)-s-1) != -1 and bin_k[len(bin_k)-s-1] == '1':
-                            print "CANNOT ADD CARRY"
-                            print "-----------------------------------"
-                            continue
+                        # print "###################################"
+                        # print "              NEGATIVE             "
+                        # print "-----------------------------------"
+                        # if (len(bin_k)-s-1) != -1 and bin_k[len(bin_k)-s-1] == '1':
+                            # print "CANNOT ADD CARRY"
+                            # print "-----------------------------------"
+                            # continue
                         rdr.insert(0, -d)
                         # Inserting zeros
                         for j in range(0, length_neg_bin_d-1):
                             rdr.insert(0, 0)
                         bin_k = add_carry(bin_k, len(bin_k), s, length_neg_bin_d, rdr)
                         flag_d = 1
-                        print "neg_d = ", neg_bin_d, ", bin_k = ", bin_k
-                        print "RDR > ", rdr
-                        print "-----------------------------------"
+                        # print "neg_d = ", neg_bin_d, ", bin_k = ", bin_k
+                        # print "RDR > ", rdr
+                        # print "-----------------------------------"
                         break
                     max_length = max_length - 1
-                    print "~~~~~~~~~~~~~~~~~~~~~*******************~~~~~~~~~~~~~~~~~~~~~~~"
+                    # print "~~~~~~~~~~~~~~~~~~~~~*******************~~~~~~~~~~~~~~~~~~~~~~~"
             if flag_d == 1:
                 flag_d = 0
                 s = Wn + 2
@@ -175,7 +173,6 @@ def RDR_algorithm(D, k):
         if flag_d == 0 and s == 2:
             rdr.insert(0, 1)
             bin_k = bin_k[:len(bin_k)-1]
-    # print "Final RDR = ", rdr
     return [rdr, len(rdr)]
 
 def run_tests_time():
@@ -205,9 +202,9 @@ def run_tests_time():
         i = i+1
 
 if __name__ == '__main__':
-    # print "bin > ", bin(651056770906015076056810763456358567190100156695615665659)
-    # run_tests_time()
-    [rdr, min_len] = RDR_algorithm([1, 3, 23, 27], 31415)
-    print "RDR > ", rdr
-    print "Min_len > ", min_len
-    print "IsRDR > ", check_rdr(rdr)
+    print "bin > ", bin(651056770906015076056810763456358567190100156695615665659)
+    run_tests_time()
+    # [rdr, min_len] = RDR_algorithm([1, 3, 23, 27], 31415)
+    # print "RDR > ", rdr
+    # print "Min_len > ", min_len
+    # print "IsRDR > ", check_rdr(rdr)
