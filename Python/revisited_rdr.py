@@ -263,7 +263,8 @@ def RDR(m, l, k):
 
 def run_tests_time():
     i = 5
-    [D, Di, naf, min_length] = RDR(1000, i, 115792089210351248362697456949407573528996955234135760342422159061068512044339)
+    k = 115792089210351248362697456949407573528996955234135760342422159061068512044339
+    [D, Di, naf, min_length] = RDR(1000, i, k)
     min_len = min_length
     D_set = D
     D_result = Di
@@ -273,7 +274,7 @@ def run_tests_time():
     while i <= 300:
         while j < 1000:
             startTime = time.time()
-            [D, Di, naf, min_length] = RDR(1000, i, 115792089210351248362697456949407573528996955234135760342422159061068512044339)
+            [D, Di, naf, min_length] = RDR(1000, i, k)
             endTime = time.time()
             averageTime = averageTime + (endTime - startTime)
             j = j+1
@@ -291,13 +292,14 @@ if __name__ == "__main__":
         run_tests_time()
     elif test_flag:
         i = 10
-        [D, Di, naf, min_length] = RDR(2*i, i, 26959956671506397946670150870196259404578077144243917216827126959956671506397946670150870196259404578077144243917216)
+        k = 26959956671506397946670150870196259404578077144243917216827126959956671506397946670150870196259404578077144243917216
+        [D, Di, naf, min_length] = RDR(2*i, i, k)
         min_len = min_length
         D_set = D
         D_result = Di
         naf_result = naf
         while i <= 300:
-            [D, Di, naf, min_length] = RDR(2*i, i, 26959956671506397946670150870196259404578077144243917216827126959956671506397946670150870196259404578077144243917216)
+            [D, Di, naf, min_length] = RDR(2*i, i, k)
             if min_length < min_len :
                 D_set = D
                 D_result = Di
