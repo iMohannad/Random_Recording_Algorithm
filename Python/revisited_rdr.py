@@ -286,23 +286,23 @@ def run_tests_time():
 
 if __name__ == "__main__":
     time_flag = 0
-    test_flag = 0
+    test_flag = 1
     if time_flag:
         run_tests_time()
     elif test_flag:
         i = 10
-        [D, Di, naf, min_length] = RDR(16, 5, 57)
+        [D, Di, naf, min_length] = RDR(2*i, i, 26959956671506397946670150870196259404578077144243917216827126959956671506397946670150870196259404578077144243917216)
         min_len = min_length
         D_set = D
         D_result = Di
         naf_result = naf
-        # while i <= 300:
-        #     [D, Di, naf, min_length] = RDR(1000, i, 12)
-        #     if min_length < min_len :
-        #         D_set = D
-        #         D_result = Di
-        #         naf_result = naf
-        #     i = i+1
+        while i <= 300:
+            [D, Di, naf, min_length] = RDR(2*i, i, 26959956671506397946670150870196259404578077144243917216827126959956671506397946670150870196259404578077144243917216)
+            if min_length < min_len :
+                D_set = D
+                D_result = Di
+                naf_result = naf
+            i = i+1
 
         print "D = ", D_set
         print  "RDR = ", D_result, "\tLength > ", len(D_result)
