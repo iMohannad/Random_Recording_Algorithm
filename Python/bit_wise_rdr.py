@@ -180,11 +180,11 @@ def run_tests_time():
     i = 5
     j = 0
     averageTime = 0
-    while i <= 100:
+    while i <= 300:
         while j < 1000:
-            D = generate_random_D(i*10, i)
+            D = generate_random_D(i*5, i)
             startTime = time.time()
-            [rdr, min_length] = RDR_algorithm(D, 651056770906015076056810763456358567190100156695615665659)
+            [rdr, min_length] = RDR_algorithm(D, 2695995667150639794667015087019625940457807714424391721682712368058238947189273490172349807129834790127349087129834623486127461012630462184628923461201280461)
             endTime = time.time()
             averageTime = averageTime + (endTime - startTime)
             j = j+1
@@ -196,7 +196,8 @@ def run_tests_time():
                 break
             # print "RDR > ", rdr, " min_length > ", min_length
         averageTime = averageTime / 1000
-        print "rdr = ", rdr, " Min Length = ", min_length, " Average Time for digit set of Size ", i, " = ", averageTime
+        # print "rdr = ", rdr, " Min Length = ", min_length, " Average Time for digit set of Size ", i, " = ", averageTime
+        print "Average Time for digit set of Size ", i, " = ", averageTime
         averageTime = 0
         j = 0
         i = i+1
