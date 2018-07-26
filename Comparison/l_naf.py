@@ -4,7 +4,7 @@ def generate_naf(w):
     naf_set = []
     naf_set.append(1)
     i = 3
-    while (i <= (2**(w-1)):
+    while (i <= (2**(w-1))):
         naf_set.append(i)
         i = i + 2;
     return naf_set
@@ -30,6 +30,8 @@ def find_naf(k, l, w):
 
 if __name__ == '__main__':
     y = generate_naf(int(sys.argv[3]))
+    print y
+    print len(y)
     x = find_naf(int(sys.argv[1]), int(sys.argv[2]), int(sys.argv[3]));
     x.reverse()
     print x
