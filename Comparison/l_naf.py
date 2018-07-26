@@ -29,6 +29,7 @@ def find_naf(k, l, w):
 
 
 if __name__ == '__main__':
+    y = generate_naf(int(sys.argv[3]))
     x = find_naf(int(sys.argv[1]), int(sys.argv[2]), int(sys.argv[3]));
     x.reverse()
     print x
