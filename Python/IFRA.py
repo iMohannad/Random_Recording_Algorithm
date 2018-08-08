@@ -218,33 +218,43 @@ def check_num(rdr):
 
 def run_tests_time():
     min_len = 1000
-    i = 5
+    i = 10
     j = 0
     averageTime = 0
-    while i <= 300:
-        while j < 1000:
-            print j
-            D = generate_random_D(i*5, i)
-            startTime = time.time()
-            
-            [rdr, min_length] = RDR_algorithm(D, 651056770906015076056810763456358567190100156695615665659)
-            endTime = time.time()
-            averageTime = averageTime + (endTime - startTime)
-            j = j+1
-            print "CHECK > ", check_num(rdr)
-            check_flag = check_rdr(rdr)
-            if check_flag == False:
-                print " -------------------- False Flag -----------------------------"
-                print "D > ", D
-                print rdr
-                break
-            # print "RDR > ", rdr, " min_length > ", min_length
-        averageTime = averageTime / 1000
-        # print "rdr = ", rdr, " Min Length = ", min_length, " Average Time for digit set of Size ", i, " = ", averageTime
-        print "Average Time for digit set of Size ", i, " = ", averageTime
-        averageTime = 0
-        j = 0
-        i = i+1
+    nist = [651056770906015076056810763456358567190100156695615665659,
+            2695995667150639794667015087019625940457807714424391721682712368051,
+            115792089210351248362697456949407573528996955234135760342422159061068512044339,
+            26959956671506397946670150870196259404578077144243917216827126959956671506397946670150870196259404578077144243917216,
+            2695995667150639794667015087019625940457807714424391721682712368058238947189273490172349807129834790127349087129834623486127461012630462184628923461201280461]
+    w = [7, 9 , 11]
+    index_w = 0
+    index_nist = 0
+    while index_w < 3:
+        while index_nist < 5:
+            D = generate_random_D(2**w[index_w], 2**(w[index_w]-1)-1)
+            while j < 50:
+                # print j
+                startTime = time.time()
+                [rdr, min_length] = RDR_algorithm(D, nist[index_nist])
+                endTime = time.time()
+                averageTime = averageTime + (endTime - startTime)
+                j = j+1
+                # print "CHECK > ", check_num(rdr)
+                # check_flag = check_rdr(rdr)
+                # if check_flag == False:
+                #     print " -------------------- False Flag -----------------------------"
+                #     print "D > ", D
+                #     print rdr
+                #     break
+                # print "RDR > ", rdr, " min_length > ", min_length
+            averageTime = averageTime / 50
+            # print "rdr = ", rdr, " Min Length = ", min_length, " Average Time for digit set of Size ", i, " = ", averageTime
+            print "Average Time for NIST[", index_nist, "] and w = ", w[index_w], " = ", averageTime
+            averageTime = 0
+            j = 0
+            index_nist = index_nist +1
+        index_nist = 0
+        index_w = index_w + 1
 
 if __name__ == '__main__':
     print "bin > ", bin(651056770906015076056810763456358567190100156695615665659)
