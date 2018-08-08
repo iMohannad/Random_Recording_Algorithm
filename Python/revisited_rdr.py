@@ -262,32 +262,40 @@ def RDR(m, l, k):
     return [D, result, naf, len(result)]
 
 def run_tests_time():
-    i = 5
-    k = 115792089210351248362697456949407573528996955234135760342422159061068512044339
-    [D, Di, naf, min_length] = RDR(1000, i, k)
-    min_len = min_length
-    D_set = D
-    D_result = Di
-    naf_result = naf
+    i = 10
+    # k = 115792089210351248362697456949407573528996955234135760342422159061068512044339
+    
     j = 0
     averageTime = 0
-    while i <= 300:
-        while j < 1000:
-            startTime = time.time()
-            [D, Di, naf, min_length] = RDR(1000, i, k)
-            endTime = time.time()
-            averageTime = averageTime + (endTime - startTime)
-            j = j+1
-        averageTime = averageTime / 1000
-        print "Average Time for digit set of Size ", i, " = ", averageTime
-        averageTime = 0
-        j = 0
-        i = i+1
+    nist = [651056770906015076056810763456358567190100156695615665659,
+            2695995667150639794667015087019625940457807714424391721682712368051,
+            115792089210351248362697456949407573528996955234135760342422159061068512044339,
+            26959956671506397946670150870196259404578077144243917216827126959956671506397946670150870196259404578077144243917216,
+            2695995667150639794667015087019625940457807714424391721682712368058238947189273490172349807129834790127349087129834623486127461012630462184628923461201280461]
+    w = [7, 9 , 11]
+    index_w = 0
+    index_nist = 0
+    while index_w < 3:
+            while index_nist < 5:
+                D = generate_random_D(2**w[index_w], 2**(w[index_w]-1)-1)
+                while j < 50:
+                    startTime = time.time()
+                    rdr = RDP(nist[index_nist], D)
+                    endTime = time.time()
+                    averageTime = averageTime + (endTime - startTime)
+                    j = j+1
+                averageTime = averageTime / 50
+                print "Average Time for NIST[", index_nist, "] and w = ", w[index_w], " = ", averageTime
+                averageTime = 0
+                j = 0
+                index_nist = index_nist +1
+            index_nist = 0
+            index_w = index_w + 1
 
 
 if __name__ == "__main__":
-    time_flag = 0
-    test_flag = 1
+    time_flag = 1
+    test_flag = 0
     if time_flag:
         run_tests_time()
     elif test_flag:
