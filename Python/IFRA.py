@@ -25,22 +25,30 @@ def generate_random_D(m, l):
 
 def add_carry_revised(bin_k):
     len_k = len(bin_k)
+    # convert bin_k to an array to allow change of one bit easily
     bin_s = list(bin_k)
 
     carry = '0'
+    # If k is empty, Then carry needs to be added last.
     if (bin_k == ''):
         return '1'
+
+    # If LSB is 0, we just add carry to make it one. If it's 1, we make it 0 and carry is set to 1
     if(bin_k[len_k-1] == '0'):
         bin_s[len_k-1] = '1'
     else:
         bin_s[len_k-1] = '0'
         carry = '1'
 
+    # index is set to the second LSB
     index = len_k-2
     while carry == '1':
+        # if k was only 1 bit, we just append the carry
         if index == -1:
             carry = '0'
             bin_s.insert(0, '1')
+        # if we reached the MSB and it's 1, then we make it 0 and append 1,
+        # if it is 0, it is just set to 1.
         elif index == 0:
             carry = '0'
             if (bin_s[index] == '1'):
@@ -48,13 +56,16 @@ def add_carry_revised(bin_k):
                 bin_s.insert(0, '1')
             else:
                 bin_s[index] = '1'
-
+        # if the bit is neither of the last two cases, it's set to 1 when it is 0,
+        # or it is set to 0, and carry is still 1
         elif(bin_k[index] == '0'):
             bin_s[index] = '1'
             carry = '0'
         else:
             bin_s[index] = '0'
+        # Update the index
         index = index - 1
+    # bin_s is converted back to a variable
     bin_k = "".join(bin_s)
     return bin_k
 
@@ -63,8 +74,7 @@ def add_carry(bin_k, len_k, s, length_neg_bin_d, rdr):
     bin_s = list(bin_k)
     carry = '0'
     length_bin_s = len(bin_s)
-    # Check up the carry
-    # Index of next bit
+
     index =len(bin_k)-s-2
     if (len(bin_k)-s-1) == -1:
         if (s == length_neg_bin_d):
@@ -97,11 +107,6 @@ def add_carry(bin_k, len_k, s, length_neg_bin_d, rdr):
         bin_s[index] = '0' if bin_s[index] == '1' else '1'
         index = index - 1
 
-    # Find number of zeros in the beginning
-    # index = 0
-    # while int(bin_s[len(bin_s)-index-1], 2) ^ int(neg_bin_d[len(neg_bin_d)-index-1]) == 0:
-    #     rdr.insert(0, 0)
-    #     index = index+1
     flag_d = 1
     bin_s = bin_s[:len(bin_s) - length_neg_bin_d]
     bin_k = "".join(bin_s)
@@ -209,7 +214,7 @@ def RDR_algorithm(D, k):
     return [rdr, len(rdr)]
 
 def check_num(rdr):
-    b = 1;
+    b = 1
     sum = 0
     for i in range(len(rdr)-1, -1, -1):
         sum = sum + b*rdr[i]
@@ -231,8 +236,8 @@ def run_tests_time():
     index_nist = 0
     while index_w < 3:
         while index_nist < 5:
-            D = generate_random_D(2**w[index_w], 2**(w[index_w]-1)-1)
-            while j < 50:
+            D = generate_random_D(2**w[index_w], 2**(w[index_w]-3)-1)
+            while j < 1000:
                 # print j
                 startTime = time.time()
                 [rdr, min_length] = RDR_algorithm(D, nist[index_nist])
@@ -247,7 +252,7 @@ def run_tests_time():
                 #     print rdr
                 #     break
                 # print "RDR > ", rdr, " min_length > ", min_length
-            averageTime = averageTime / 50
+            averageTime = averageTime / 1000
             # print "rdr = ", rdr, " Min Length = ", min_length, " Average Time for digit set of Size ", i, " = ", averageTime
             print "Average Time for NIST[", index_nist, "] and w = ", w[index_w], " = ", averageTime
             averageTime = 0
