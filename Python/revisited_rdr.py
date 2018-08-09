@@ -73,17 +73,23 @@ def wmax(k, Wn, D):
         # print "------------ WMAX = ", i, " ----------------"
         # print "D_pos_", i, " = ", D_pos
         # print "D_neg_", i, " = ", D_neg
-
+        # print k
         # check the first candidate where di \in D < k
         for d in D:
             if d < k:
                 if (pw(k, i) == pw(d, i)):
                     return i
-                if (pw(k, i) == 2**i - pw(d, i)):
+                neg = 2**i - pw(d, i)
+                while neg < 0:
+                    neg = neg + 2**i
+                if (pw(k, i) == neg):
                     return i
 
         # print "--------------------------------------------"
-    return w
+    # print k
+    # print D
+    # print "NO VALUE FOUND"
+    return 2
 
 
 
@@ -273,18 +279,19 @@ def run_tests_time():
             26959956671506397946670150870196259404578077144243917216827126959956671506397946670150870196259404578077144243917216,
             2695995667150639794667015087019625940457807714424391721682712368058238947189273490172349807129834790127349087129834623486127461012630462184628923461201280461]
     w = [7, 9 , 11]
-    index_w = 0
-    index_nist = 0
+    index_w = 2
+    index_nist = 4
     while index_w < 3:
             while index_nist < 5:
-                D = generate_random_D(2**w[index_w], 2**(w[index_w]-1)-1)
-                while j < 50:
+                D = generate_random_D(2**w[index_w], 2**(w[index_w]-3)-1)
+                while j < 100:
+                    print j
                     startTime = time.time()
                     rdr = RDP(nist[index_nist], D)
                     endTime = time.time()
                     averageTime = averageTime + (endTime - startTime)
                     j = j+1
-                averageTime = averageTime / 50
+                averageTime = averageTime / 100
                 print "Average Time for NIST[", index_nist, "] and w = ", w[index_w], " = ", averageTime
                 averageTime = 0
                 j = 0
@@ -294,8 +301,8 @@ def run_tests_time():
 
 
 if __name__ == "__main__":
-    time_flag = 1
-    test_flag = 0
+    time_flag = 0
+    test_flag = 1
     if time_flag:
         run_tests_time()
     elif test_flag:
@@ -320,29 +327,18 @@ if __name__ == "__main__":
         print  "RDR = ", D_result, "\tLength > ", len(D_result)
         print "NAF = ", naf_result , "Length > ", len(naf_result)
     else:
-        D = generate_random_D(30, 5)
-        #D = [3, 23, 27, 53, 61, 71, 79, 97]
-        D.insert(0, 1)
-        k = 31415
-        result = RDP(k, D)
-        print "D = ", D
-        print "bin D = ",
-        for i in D:
-            print bin(i),
-        print
-        D_neg = []
-        for j in range(5,1, -1):
-            for i in D:
-                val = 2**j - i
-                while val < 0:
-                    val = val + 2**j
-                D_neg.append(val)
-            print "Neg D(", j,") = ", D_neg
-            print "Bin Neg D(", j, ") = ",
-            for i in D_neg:
-                print bin(i),
-            print
-            D_neg = []
-        print "RDR = ", result
-        print "Binary form = ", bin(k)
+        i = 1000
+        w = 15
+        k = 314988915
+        while (w < 50):
+            D = generate_random_D(w*5, w)
+            D.insert(0, 1)
+            while i > 0:
+                # print i
+                result = RDP(k, D)
+                i = i-1
+            print "D = ", D
+            print "RDR = ", result
+            w = w + 1
+            i = 1000
 
