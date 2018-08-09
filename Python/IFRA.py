@@ -73,101 +73,68 @@ def get_Wn(D):
     return int(math.floor(math.log(max(D), 2)))
 
 def RDR_algorithm(D, k):
-    # print "k > ", k
-    # print "D > ", D
     rdr = []
     bin_k = bin(k)[2:]
+    # get number of bits
     Wn = get_Wn(D)
     flag_d = 0
-    max_length = len(bin(max(D)))
-    count = 0
     while bin_k != '':
-        # Remove leading zeros
+        # If k is even, zero is appened to rdr and k is shifted right 1 bit
         if bin_k[len(bin_k)-1] == '0':
-            # print "###################################"
-            # print "                ZERO               "
-            # print "-----------------------------------"
             rdr.insert(0, 0)
             bin_k = bin_k[:len(bin_k)-1]
-            # print "k > ", bin_k
-            # print "RDR = ", rdr
-            # print "-----------------------------------"
             continue
-        for s in range(Wn + 1, 0, -1):
-            count = count + 1
-            if (s > len(bin_k)):
-                    continue;
-            # if count >= 20:
-            #     bin_k = ''
-            #     flag_d = 1
-            #     break
+        # if LSB is not 0, we extract w bit
+        for w in range(Wn + 1, 0, -1):
+            # if the window is bigger than the length of k, we need to have smaller windwo
+            if (w > len(bin_k)):
+                    continue
+            # we check every d in the digit set D
             for d in D:
-                bin_d = bin(d)[2:]
+                bin_d = bin(d)[2:] # get the binary representation of d
                 length_bin_d = len(bin_d)
-                k_reg = bin_k[len(bin_k) - s:]
-                # Neg D
-                neg_d = 2**s - d
+                # extract w bits from bin_k
+                k_reg = bin_k[len(bin_k) - w:]
+                # compute the negative residue of d, if neg_d is negative, it is ignored by setting it to 0.
+                neg_d = 2**w - d
                 while neg_d < 0:
                     neg_d = 0
-                neg_bin_d = bin(neg_d)[2:]
+                neg_bin_d = bin(neg_d)[2:] # get the binary representation of neg_d
                 length_neg_bin_d = len(neg_bin_d)
-                if d <= k_reg:
-                    # print "~~~~~~~~~~~~~~~~~~~~~*******************~~~~~~~~~~~~~~~~~~~~~~~"
-                    # print "s = ", s, ", d = ", bin_d, ", neg_d = ", neg_bin_d, ", k = ", bin_k, "bin_d < bin_k = ", bin_d <= bin_k, " len(bin_d) > ", len(bin_d)
-                    # print "k_reg = ", k_reg
-                    # If d value equal to k
+                # d cannot be chosen unless the value is less than the extracted window.
+                if d <= k_reg:=
                     if int(bin_d, 2) ^ int(k_reg, 2) == 0:
-                        # print "###################################"
-                        # print "               EQUAL               "
-                        # print "-----------------------------------"
-                        # print s
-                        # print k_reg
                         rdr.insert(0, d)
-                        for j in range(0, s-1):
+                        # inserting w-1 zeros
+                        for j in range(0, w-1):
                             rdr.insert(0, 0)
-                        bin_k = bin_k[:len(bin_k) - s]
-                        flag_d = 1;
-                        # print "k > ", bin_k, ", s > ", s
-                        # print "RDR > ", rdr
-                        break;
+                        # update k by shifting it right w bits
+                        bin_k = bin_k[:len(bin_k) - w]
+                        # set flag_d to 1 to set the window to Wn+1
+                        flag_d = 1
+                        break
                     elif int(neg_bin_d, 2) ^ int(k_reg, 2) == 0 and neg_d != 1:
-                        # print "###################################"
-                        # print "              NEGATIVE             "
-                        # print "-----------------------------------"
-                        # if (len(bin_k)-s-1) != -1 and bin_k[len(bin_k)-s-1] == '1':
-                            # print "CANNOT ADD CARRY"
-                            # print "-----------------------------------"
-                            # continue
                         rdr.insert(0, -d)
                         # Inserting zeros
-                        for j in range(0, s-1):
+                        for j in range(0, w-1):
                             rdr.insert(0, 0)
-                        bin_k = bin_k[:len(bin_k) - s]
-                        # print "k > ", bin_k, ", s > ", s
-                        # print rdr
+                        # update k by shifting it right w bits
+                        bin_k = bin_k[:len(bin_k) - w]
+                        # update k after adding a carry to LSB
                         bin_k = add_carry_revised(bin_k)
-                        # bin_k = add_carry(bin_k, len(bin_k), s, length_neg_bin_d, rdr)
+                        # set flag_d to 1 to set the window to Wn+1
                         flag_d = 1
-                        # print "k > ", bin_k
-                        # print "RDR > ", rdr
-                        # print "neg_d = ", neg_bin_d, ", bin_k = ", bin_k
-                        # print "RDR > ", rdr
-                        # print "-----------------------------------"
                         break
-                    max_length = max_length - 1
-                    # print "~~~~~~~~~~~~~~~~~~~~~*******************~~~~~~~~~~~~~~~~~~~~~~~"
+            # break out of the for loop to check if we finished k or not
             if flag_d == 1:
                 flag_d = 0
-                s = Wn + 2
                 break
 
-
-        # if flag_d == 0 and s == 2:
-        #     rdr.insert(0, 1)
-        #     bin_k = bin_k[:len(bin_k)-1]
+    # In the end, there might be some leading zeros which are not needed,
+    # this while loop removes the leading zeros and update k accordingly
     while (rdr[0] == 0):
         rdr = rdr[1:]
-    # print rdr
+    # return the result, and length of result
     return [rdr, len(rdr)]
 
 def check_num(rdr):
