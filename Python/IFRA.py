@@ -69,49 +69,6 @@ def add_carry_revised(bin_k):
     bin_k = "".join(bin_s)
     return bin_k
 
-
-def add_carry(bin_k, len_k, s, length_neg_bin_d, rdr):
-    bin_s = list(bin_k)
-    carry = '0'
-    length_bin_s = len(bin_s)
-
-    index =len(bin_k)-s-2
-    if (len(bin_k)-s-1) == -1:
-        if (s == length_neg_bin_d):
-            rdr.insert(0, 1)
-            flag_d = 1
-            return ''
-        else:
-            flag_d = 1
-            bin_s.insert(0, '1')
-            bin_s = bin_s[:len(bin_s) - length_neg_bin_d]
-            bin_k = "".join(bin_s)
-            return bin_k
-    if bin_s[len(bin_k)-s-1] == '1':
-        carry = '1'
-        bin_s[len(bin_k)-s-1] = '0'
-    else:
-        bin_s[len(bin_k)-s-1] = '1'
-
-    while carry == '1':
-
-        if index == 0:
-            if (bin_s[index] == '1'):
-                bin_s[index] = '0'
-                bin_s.insert(0, '1')
-                carry = '0'
-            else:
-                bin_s[index] = '1'
-            break
-        carry = '1' if bin_s[index] == '1' else '0'
-        bin_s[index] = '0' if bin_s[index] == '1' else '1'
-        index = index - 1
-
-    flag_d = 1
-    bin_s = bin_s[:len(bin_s) - length_neg_bin_d]
-    bin_k = "".join(bin_s)
-    return bin_k
-
 def get_Wn(D):
     return int(math.floor(math.log(max(D), 2)))
 
