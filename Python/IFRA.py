@@ -102,7 +102,7 @@ def RDR_algorithm(D, k):
                 neg_bin_d = bin(neg_d)[2:] # get the binary representation of neg_d
                 length_neg_bin_d = len(neg_bin_d)
                 # d cannot be chosen unless the value is less than the extracted window.
-                if d <= k_reg:=
+                if d <= k_reg:
                     if int(bin_d, 2) ^ int(k_reg, 2) == 0:
                         rdr.insert(0, d)
                         # inserting w-1 zeros
@@ -137,6 +137,7 @@ def RDR_algorithm(D, k):
     # return the result, and length of result
     return [rdr, len(rdr)]
 
+# this function return the value of rdr representation.
 def check_num(rdr):
     b = 1
     sum = 0
@@ -146,7 +147,6 @@ def check_num(rdr):
     return sum
 
 def run_tests_time():
-    min_len = 1000
     i = 10
     j = 0
     averageTime = 0
@@ -168,16 +168,7 @@ def run_tests_time():
                 endTime = time.time()
                 averageTime = averageTime + (endTime - startTime)
                 j = j+1
-                # print "CHECK > ", check_num(rdr)
-                # check_flag = check_rdr(rdr)
-                # if check_flag == False:
-                #     print " -------------------- False Flag -----------------------------"
-                #     print "D > ", D
-                #     print rdr
-                #     break
-                # print "RDR > ", rdr, " min_length > ", min_length
             averageTime = averageTime / 1000
-            # print "rdr = ", rdr, " Min Length = ", min_length, " Average Time for digit set of Size ", i, " = ", averageTime
             print "Average Time for NIST[", index_nist, "] and w = ", w[index_w], " = ", averageTime
             averageTime = 0
             j = 0
