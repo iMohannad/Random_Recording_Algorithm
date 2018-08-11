@@ -2,6 +2,16 @@ import math
 import random
 import time
 
+def average_density(rdr):
+    countZeros = 0
+    length = 0
+    for i in rdr:
+        length = length + 1
+        if (i == 0):
+            countZeros = countZeros + 1
+    return [countZeros, length]
+
+
 def check_rdr(rdr):
     for i in range (0, len(rdr)-1):
         if rdr[i] != 0 and rdr[i+1] != 0:
