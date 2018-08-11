@@ -3,6 +3,16 @@ import random
 import sys
 import time
 
+
+def average_density(rdr):
+    countZeros = 0
+    length = 0
+    for i in rdr:
+        length = length + 1
+        if (i == 0):
+            countZeros = countZeros + 1
+    return [countZeros, length]
+    
 """ Convert integer k to NAF format using the following algorithm
     i <- 0
     while k > 0 do
