@@ -9,7 +9,7 @@ def average_density(rdr):
         length = length + 1
         if (i == 0):
             countZeros = countZeros + 1
-    return [countZeros, length]
+    return [length - countZeros, length]
 
 
 def check_rdr(rdr):
@@ -145,7 +145,7 @@ def RDR_algorithm(D, k):
     while (rdr[0] == 0):
         rdr = rdr[1:]
     # return the result, and length of result
-    return [rdr, len(rdr)]
+    return rdr
 
 # this function return the value of rdr representation.
 def check_num(rdr):
@@ -174,7 +174,7 @@ def run_tests_time():
             while j < 1000:
                 # print j
                 startTime = time.time()
-                [rdr, min_length] = RDR_algorithm(D, nist[index_nist])
+                rdr = RDR_algorithm(D, nist[index_nist])
                 endTime = time.time()
                 averageTime = averageTime + (endTime - startTime)
                 j = j+1

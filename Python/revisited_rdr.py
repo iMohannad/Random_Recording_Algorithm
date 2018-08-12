@@ -11,7 +11,7 @@ def average_density(rdr):
         length = length + 1
         if (i == 0):
             countZeros = countZeros + 1
-    return [countZeros, length]
+    return [length - countZeros, length]
     
 """ Convert integer k to NAF format using the following algorithm
     i <- 0
