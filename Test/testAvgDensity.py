@@ -33,7 +33,14 @@ def testDesnity(k):
 if __name__ == "__main__":
     k = 651056770906015076056810763456358567190100156695615665659
     w = [7, 9 , 11]
-    testDesnity(k)
+    # testDesnity(k)
+    D = [1, 3, 9, 19, 21, 27]
+    w = 6
+    while w > 1:
+        x = revisited_rdr.get_Dw(D, w)
+        print "w = ", w, ", D- = ", x
+        w = w-1
+
     # D = [1, 3, 23, 27]
     # rdr = revisited_rdr.RDP(k, D)
     # ifrdr = IFRA.RDR_algorithm(D, k)
@@ -49,4 +56,3 @@ if __name__ == "__main__":
     # print "RDR = ", rdr_num, "/", rdr_dom
     # print "IFRA = ", ifrdr_num, "/", ifrdr_dom
     # print "D_length = ", len(D), ", RDR = ", Fraction(avg_den_rdr).limit_denominator(), " = ", avg_den_rdr, ", IFRA = ", Fraction(avg_den_ifrdr).limit_denominator(), " = ", avg_den_ifrdr,"\n"
-        
