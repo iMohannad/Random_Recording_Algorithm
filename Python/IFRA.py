@@ -41,25 +41,44 @@ def add_carry_revised(bin_k, W):
     len_k = len(bin_k)
     # convert bin_k to an array to allow change of one bit easily
     bin_s = list(bin_k)
-    
+    # if carry is 0, return
     if (carry == 0):
         return bin_k
+    # if carry is 2, then, add carry and check if there's any more carry
+    if (carry == 2):
+        if (bin_k == '' or bin_k == '0'):
+            carry = 0
+            return '10'
+        if (bin_k == '1'):
+            carry = 0
+            return '11'
+        if (bin_k[len_k-2] == '0'):
+            bin_s[len_k-2] = '1'
+            carry = 0
+        else:
+            bin_s[len_k-2] = '0'
+            carry = 1
+        count = 2
+        # index is set to the second LSB
+        index = len_k-3
+    elif(carry == 1):
+        # If k is empty, Then carry needs to be added last.
+        if (bin_k == ''):
+            return '1'
 
-    # If k is empty, Then carry needs to be added last.
-    if (bin_k == ''):
-        return '1'
+        # If LSB is 0, we just add carry to make it one. If it's 1, we make it 0 and carry is set to 1
+        if(bin_k[len_k-1] == '0'):
+            bin_s[len_k-1] = '1'
+            carry = 0
+        else:
+            bin_s[len_k-1] = '0'
+            carry = 1
+        count = 1
+        # index is set to the second LSB
+        index = len_k-2
 
-    # If LSB is 0, we just add carry to make it one. If it's 1, we make it 0 and carry is set to 1
-    if(bin_k[len_k-1] == '0'):
-        bin_s[len_k-1] = '1'
-        carry = 0
-    else:
-        bin_s[len_k-1] = '0'
-        carry = 1
 
-    count = 1
-    # index is set to the second LSB
-    index = len_k-2
+
     while carry == 1 and count <= W:
         # if k was only 1 bit, we just append the carry
         if index == -1:
@@ -98,13 +117,9 @@ def RDR_algorithm(D, k):
     Wn = get_Wn(D)
     flag_d = 0
     global carry
-    while bin_k != '' or carry == 1:
-        print "Carry > ", carry
-        print "RDR > ", rdr
-        print "k > ", k
+    while bin_k != '' or carry > 0:
         if bin_k == '':
-            rdr.insert(0, 1)
-            carry = 0
+            rdr = add_carry_revised(bin_k, Wn+1)
             continue
         # If k is even, zero is appened to rdr and k is shifted right 1 bit
         if bin_k[len(bin_k)-1] == '0':
@@ -116,21 +131,12 @@ def RDR_algorithm(D, k):
             # if the window is bigger than the length of k, we need to have smaller windwo
             if (w > len(bin_k)):
                     continue
-            # we check every d in the digit set D
+            # extract w bits from bin_k
+            k_reg = bin_k[len(bin_k) - w:]
+            k_reg = add_carry_revised(k_reg, Wn+1)
             for d in D:
+                # we check every d in the digit set D
                 bin_d = bin(d)[2:] # get the binary representation of d
-                # extract w bits from bin_k
-                k_reg = bin_k[len(bin_k) - w:]
-                print "---------------------------------------------"
-                print "k_reg before > ", k_reg, " carry = ", carry
-                k_reg = add_carry_revised(k_reg, Wn+1)
-                print "k_reg after > ", k_reg
-                print "d > ", d
-                # compute the negative residue of d, if neg_d is negative, it is ignored by setting it to 0.
-                neg_d = 2**w - d
-                while neg_d < 0:
-                    neg_d = 0
-                neg_bin_d = bin(neg_d)[2:] # get the binary representation of neg_d
                 # d cannot be chosen unless the value is less than the extracted window.
                 if d <= k_reg:
                     if int(bin_d, 2) ^ int(k_reg, 2) == 0:
@@ -143,19 +149,30 @@ def RDR_algorithm(D, k):
                         # set flag_d to 1 to set the window to Wn+1
                         flag_d = 1
                         break
-                    elif int(neg_bin_d, 2) ^ int(k_reg, 2) == 0 and neg_d != 1:
-                        rdr.insert(0, -d)
-                        # Inserting zeros
-                        for j in range(0, w-1):
-                            rdr.insert(0, 0)
-                        # update k by shifting it right w bits
-                        bin_k = bin_k[:len(bin_k) - w]
-                        carry = 1
-                        # update k after adding a carry to LSB
-                        bin_k = add_carry_revised(bin_k, Wn+1)
-                        # set flag_d to 1 to set the window to Wn+1
-                        flag_d = 1
-                        break
+            if flag_d == 1:
+                flag_d = 0
+                break
+            for d in D:
+                # we check every d in the digit set D
+                bin_d = bin(d)[2:] # get the binary representation of d
+                # compute the negative residue of d, if neg_d is negative, it is ignored by setting it to 0.
+                neg_d = 2**w - d
+                while neg_d < 0:
+                    neg_d = 0
+                neg_bin_d = bin(neg_d)[2:] # get the binary representation of neg_d
+                if int(neg_bin_d, 2) ^ int(k_reg, 2) == 0 and neg_d != 1:
+                    rdr.insert(0, -d)
+                    # Inserting zeros
+                    for j in range(0, w-1):
+                        rdr.insert(0, 0)
+                    # update k by shifting it right w bits
+                    bin_k = bin_k[:len(bin_k) - w]
+                    carry = carry + 1
+                    # update k after adding a carry to LSB
+                    bin_k = add_carry_revised(bin_k, Wn+1)
+                    # set flag_d to 1 to set the window to Wn+1
+                    flag_d = 1
+                    break
             # break out of the for loop to check if we finished k or not
             if flag_d == 1:
                 flag_d = 0
@@ -189,7 +206,7 @@ def run_tests_time():
     w = [5, 7, 9 , 11]
     index_w = 0
     index_nist = 0
-    while index_w < 1:
+    while index_w < 3:
         while index_nist < 5:
             D = generate_random_D(2**w[index_w], 2**(w[index_w]-3)-1)
             while j < 1000:
@@ -209,7 +226,7 @@ def run_tests_time():
 
 if __name__ == '__main__':
     # print "bin > ", bin(651056770906015076056810763456358567190100156695615665659)
-    # # run_tests_time()
+    run_tests_time()
     # nist = [651056770906015076056810763456358567190100156695615665659,
     #         2695995667150639794667015087019625940457807714424391721682712368051,
     #         115792089210351248362697456949407573528996955234135760342422159061068512044339,
@@ -220,8 +237,8 @@ if __name__ == '__main__':
     # k = nist[4]
     # rdr = RDR_algorithm(D, k)
     # print "IFRA > ", rdr
-    rdr = RDR_algorithm([1, 3, 23, 27], 314154655)
-    print "RDR > ", rdr
-    print "Min_len > ", len(rdr)
-    print "IsRDR > ", check_rdr(rdr)
-    print "check > ", check_num(rdr)
+    # rdr = RDR_algorithm([1, 3, 23, 27], 1023)
+    # print "RDR > ", rdr
+    # print "Min_len > ", len(rdr)
+    # print "IsRDR > ", check_rdr(rdr)
+    # print "check > ", check_num(rdr)
