@@ -116,24 +116,30 @@ def RDR_algorithm(D, k):
     # get number of bits
     Wn = get_Wn(D)
     flag_d = 0
-    global carry
-    while bin_k != '' or carry > 0:
-        if bin_k == '':
-            rdr = add_carry_revised(bin_k, Wn+1)
+    c = 0
+    # global carry
+    while bin_k != '' or c > 0:
+        if bin_k == '': # carry is 1
+            rdr.insert(0, 1)
+            c = 0
             continue
-        # If k is even, zero is appened to rdr and k is shifted right 1 bit
-        if bin_k[len(bin_k)-1] == '0':
+        # if LSB(k) xor c = 0, zero is appened to rdr and k is shifted right 1 bit
+        if (bin_k[len(bin_k)-1] == '0' and c == 0 ) or (bin_k[len(bin_k)-1] == '1' and c == 1):
             rdr.insert(0, 0)
             bin_k = bin_k[:len(bin_k)-1]
             continue
-        # if LSB is not 0, we extract w bit
+        # if LSB(k) xor c = 1, we extract w bit
+        # convert bin_k to an array to allow change of one bit easily
+        bin_s = list(bin_k)
+        bin_s[len(bin_k)-1] = '1'
+        bin_k = "".join(bin_s)
+        c = 0
         for w in range(Wn + 1, 0, -1):
             # if the window is bigger than the length of k, we need to have smaller windwo
             if (w > len(bin_k)):
                     continue
             # extract w bits from bin_k
             k_reg = bin_k[len(bin_k) - w:]
-            k_reg = add_carry_revised(k_reg, Wn+1)
             for d in D:
                 # we check every d in the digit set D
                 bin_d = bin(d)[2:] # get the binary representation of d
@@ -167,9 +173,8 @@ def RDR_algorithm(D, k):
                         rdr.insert(0, 0)
                     # update k by shifting it right w bits
                     bin_k = bin_k[:len(bin_k) - w]
-                    carry = carry + 1
+                    c = 1
                     # update k after adding a carry to LSB
-                    bin_k = add_carry_revised(bin_k, Wn+1)
                     # set flag_d to 1 to set the window to Wn+1
                     flag_d = 1
                     break
@@ -226,7 +231,7 @@ def run_tests_time():
 
 if __name__ == '__main__':
     # print "bin > ", bin(651056770906015076056810763456358567190100156695615665659)
-    run_tests_time()
+    # run_tests_time()
     # nist = [651056770906015076056810763456358567190100156695615665659,
     #         2695995667150639794667015087019625940457807714424391721682712368051,
     #         115792089210351248362697456949407573528996955234135760342422159061068512044339,
@@ -237,8 +242,8 @@ if __name__ == '__main__':
     # k = nist[4]
     # rdr = RDR_algorithm(D, k)
     # print "IFRA > ", rdr
-    # rdr = RDR_algorithm([1, 3, 23, 27], 1023)
-    # print "RDR > ", rdr
-    # print "Min_len > ", len(rdr)
-    # print "IsRDR > ", check_rdr(rdr)
-    # print "check > ", check_num(rdr)
+    rdr = RDR_algorithm([1, 3, 23, 27], 1023)
+    print "RDR > ", rdr
+    print "Min_len > ", len(rdr)
+    print "IsRDR > ", check_rdr(rdr)
+    print "check > ", check_num(rdr)
