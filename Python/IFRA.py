@@ -120,11 +120,11 @@ def RDR_algorithm(D, k):
     # global carry
     while bin_k != '' or c > 0:
         if bin_k == '': # carry is 1
-            rdr.insert(0, 1)
+            rdr.insert(0, c)
             c = 0
             continue
         # if LSB(k) xor c = 0, zero is appened to rdr and k is shifted right 1 bit
-        if (bin_k[len(bin_k)-1] == '0' and c == 0 ) or (bin_k[len(bin_k)-1] == '1' and c == 1):
+        if (bin_k[len(bin_k)-1] == '0' and c == 0 ) or (bin_k[len(bin_k)-1] == '1' and c == 1) or (bin_k[len(bin_k)-1] == '1' and c == -1):
             rdr.insert(0, 0)
             bin_k = bin_k[:len(bin_k)-1]
             continue
