@@ -118,7 +118,7 @@ def RDR_algorithm(D, k):
     flag_d = 0
     c = 0
     # global carry
-    while bin_k != '' or c > 0:
+    while bin_k != '' or c != 0:
         if bin_k == '': # carry is 1
             rdr.insert(0, c)
             c = 0
@@ -132,7 +132,7 @@ def RDR_algorithm(D, k):
                 rdr.insert(0, -1)
                 bin_k = bin_k[:len(bin_k)-1]
             else:
-                rdr.insert(0, -1)
+                rdr.insert(0, 0)
                 bin_k = bin_k[:len(bin_k)-1]
             c = 0
             continue
@@ -177,18 +177,38 @@ def RDR_algorithm(D, k):
                 bin_d = bin(d)[2:] # get the binary representation of d
                 # compute the negative residue of d, if neg_d is negative, it is ignored by setting it to 0.
                 neg_d = 2**w - d
-                while neg_d < 0:
+                if neg_d < 0:
                     neg_d = 0
                 neg_bin_d = bin(neg_d)[2:] # get the binary representation of neg_d
                 if int(neg_bin_d, 2) ^ int(k_reg, 2) == 0 and neg_d != 1:
-                    rdr.insert(0, -d)
+                    if c == -1:
+                        rdr.insert(0, d)
+                    else:
+                        rdr.insert(0, -d)
                     # Inserting zeros
                     for j in range(0, w-1):
                         rdr.insert(0, 0)
                     # update k by shifting it right w bits
                     bin_k = bin_k[:len(bin_k) - w]
-                    c = 1
+                    if c == 0:
+                        c = 1
                     # update k after adding a carry to LSB
+                    # set flag_d to 1 to set the window to Wn+1
+                    flag_d = 1
+                    break
+                ###############################
+                if neg_d == 0:
+                    neg_d = d - 2**w
+                neg_bin_d = bin(neg_d)[2:] # get the binary representation of neg_d
+                if int(neg_bin_d, 2) ^ int(k_reg, 2) == 0 and neg_d != 1:
+                    rdr.insert(0, d)
+                    # Inserting zeros
+                    for j in range(0, w-1):
+                        rdr.insert(0, 0)
+                    # update k by shifting it right w bits
+                    bin_k = bin_k[:len(bin_k) - w]
+                    # update k after adding a carry to LSB
+                    c = -1
                     # set flag_d to 1 to set the window to Wn+1
                     flag_d = 1
                     break
@@ -256,7 +276,9 @@ if __name__ == '__main__':
     # k = nist[4]
     # rdr = RDR_algorithm(D, k)
     # print "IFRA > ", rdr
-    rdr = RDR_algorithm([1, 3, 23, 27], 1023)
+    k = 651056770906015076056810763456358567190100156695615665659
+    print "k > ", k, ", k_2 > ", bin(k)
+    rdr = RDR_algorithm([1, 3, 23, 27], k)
     print "RDR > ", rdr
     print "Min_len > ", len(rdr)
     print "IsRDR > ", check_rdr(rdr)
