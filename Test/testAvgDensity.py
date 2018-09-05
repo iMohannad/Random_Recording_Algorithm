@@ -6,22 +6,27 @@ import IFRA
 import revisited_rdr
 
 
-def testDesnity(k):
+def testDesnity(K):
     i = 5
     rdr = 0
     ifrdr = 0
     [rdr_num, rdr_dom] = [0, 0]
     [ifrdr_num, ifrdr_dom] = [0, 0]
     while i <= 50:
+        avg_den_rdr = 0
+        avg_den_ifrdr = 0
         D = IFRA.generate_random_D(i*6, i)
-        rdr = revisited_rdr.RDP(k, D)
-        ifrdr = IFRA.RDR_algorithm(D, k)
-        [rdr_num, rdr_dom] = revisited_rdr.average_density(rdr)
-        [ifrdr_num, ifrdr_dom] = IFRA.average_density(ifrdr)
-        avg_den_rdr = float(rdr_num)/rdr_dom
-        avg_den_ifrdr = float(ifrdr_num)/ifrdr_dom
+        for k in K:
+            rdr = revisited_rdr.RDP(k, D)
+            ifrdr = IFRA.RDR_algorithm(D, k)
+            [rdr_num, rdr_dom] = revisited_rdr.average_density(rdr)
+            [ifrdr_num, ifrdr_dom] = IFRA.average_density(ifrdr)
+            avg_den_rdr = avg_den_rdr + float(rdr_num)/rdr_dom
+            avg_den_ifrdr = avg_den_ifrdr + float(ifrdr_num)/ifrdr_dom
         # print "RDR > ", rdr
         # print "IFRA > ", ifrdr
+        avg_den_rdr = avg_den_rdr/len(K)
+        avg_den_ifrdr = avg_den_ifrdr/len(K)
         print "Digit set = ", D
         print "RDR = ", rdr_num, "/", rdr_dom
         print "IFRA = ", ifrdr_num, "/", ifrdr_dom
@@ -31,15 +36,19 @@ def testDesnity(k):
 
 
 if __name__ == "__main__":
-    k = 651056770906015076056810763456358567190100156695615665659
+    k = [651056770906015076056810763456358567190100156695615665659,
+         723647816274791289489234589823745819748919823748132114123,
+         182734757873569834951818919184818418294381845818567267241,
+         678954729851252385323481287667812418539458486123951344599,
+         124158546800001293123412834918394812491000019234891241901]
     w = [7, 9 , 11]
-    # testDesnity(k)
-    D = [1, 3, 9, 19, 21, 27]
-    w = 6
-    while w > 1:
-        x = revisited_rdr.get_Dw(D, w)
-        print "w = ", w, ", D- = ", x
-        w = w-1
+    testDesnity(k)
+    # D = [1, 3, 9, 19, 21, 27]
+    # w = 6
+    # while w > 1:
+    #     x = revisited_rdr.get_Dw(D, w)
+    #     print "w = ", w, ", D- = ", x
+    #     w = w-1
 
     # D = [1, 3, 23, 27]
     # rdr = revisited_rdr.RDP(k, D)
