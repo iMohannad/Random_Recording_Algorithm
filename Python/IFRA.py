@@ -134,7 +134,7 @@ def RDR_algorithm(D, k):
         bin_s[len(bin_k)-1] = '1'
         bin_k = "".join(bin_s)
         c = 0
-        for w in range(Wn + 1, 0, -1):
+        for w in range(Wn + 2, 0, -1):
             # if the window is bigger than the length of k, we need to have smaller windwo
             if (w > len(bin_k)):
                     continue
